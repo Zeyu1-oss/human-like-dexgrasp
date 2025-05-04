@@ -52,8 +52,7 @@ class JointConsistency:
             ]
 
 
-    def forward(self, joint_state: torch.Tensor, opt_progress: float = 0.0, debug: bool = False) -> torch.Tensor:
-
+    def forward(self, joint_state: torch.Tensor, debug: bool = False) -> torch.Tensor:
         """
         joint_state: [B, H, DOF] - joint angle values across time horizon
         Returns:

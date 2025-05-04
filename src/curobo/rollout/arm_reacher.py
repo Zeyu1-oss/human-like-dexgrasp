@@ -355,7 +355,7 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                  # 🔍 DEBUG: 检查 joint_state 的 DOF 顺序是否与 joint_names 一致
                  print("🔍 [DEBUG] Verifying joint_state index mapping:")
 
-# 打印第一个 batch、第一个时间步（B=0, H=0）下前几个 joint 值及其对应名称
+               # 打印第一个 batch、第一个时间步（B=0, H=0）下前几个 joint 值及其对应名称
                  for i in range(min(joint_state.shape[-1], 22)):  # 打印前10个 DOFs
                     joint_name = self.state_bounds.joint_names[i]
                     joint_value = joint_state[0, 0, i].item()

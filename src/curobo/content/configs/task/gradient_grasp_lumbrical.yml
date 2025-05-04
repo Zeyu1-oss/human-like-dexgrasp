@@ -45,7 +45,7 @@ cost:
     classify: False
     activation_distance: 0.002
   joint_consistency_cfg:
-    weight: 0
+    weight: 2000.0
     group_allowed_diff: [0.01,0.1]
     group_weight: [2.0, 1.0]
     selected_joint_groups:
