@@ -45,9 +45,11 @@ cost:
     classify: False
     activation_distance: 0.002
   joint_consistency_cfg:
-    weight: 2000.0
-    group_allowed_diff: [0.1]
+    weight: 0
+    group_allowed_diff: [0.01,0.1]
+    group_weight: [2.0, 1.0]
     selected_joint_groups:
+     - ['rh_FFJ3', 'rh_MFJ3', 'rh_RFJ3', 'rh_LFJ3']
      - ['rh_FFJ4', 'rh_MFJ4', 'rh_RFJ4', 'rh_LFJ4']  # 指末端
 
 lbfgs:

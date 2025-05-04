@@ -347,13 +347,16 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                             cost_list.append(c)
                             
         with profiler.record_function("cost/joint_consistency"):
-            if self.joint_consistency_cost is not None:
+            if (self.joint_consistency_cost is not None 
+                and self.joint_consistency_cost.weight is not None
+                and torch.any(self.joint_consistency_cost.weight != 0)
+                ):
                  joint_state = state_batch.position  # [B, H, DOF]
                  # 🔍 DEBUG: 检查 joint_state 的 DOF 顺序是否与 joint_names 一致
                  print("🔍 [DEBUG] Verifying joint_state index mapping:")
 
 # 打印第一个 batch、第一个时间步（B=0, H=0）下前几个 joint 值及其对应名称
-                 for i in range(min(joint_state.shape[-1], 10)):  # 打印前10个 DOFs
+                 for i in range(min(joint_state.shape[-1], 22)):  # 打印前10个 DOFs
                     joint_name = self.state_bounds.joint_names[i]
                     joint_value = joint_state[0, 0, i].item()
                     print(f"  Index {i:2d}: Joint '{joint_name}' -> Value: {joint_value:.6f}")

@@ -52,7 +52,8 @@ class JointConsistency:
             ]
 
 
-    def forward(self, joint_state: torch.Tensor, debug: bool = False) -> torch.Tensor:
+    def forward(self, joint_state: torch.Tensor, opt_progress: float = 0.0, debug: bool = False) -> torch.Tensor:
+
         """
         joint_state: [B, H, DOF] - joint angle values across time horizon
         Returns:
@@ -82,11 +83,18 @@ class JointConsistency:
 
                 if debug:
                     joint_names = None
-                    if hasattr(self, "joint_index_to_name"):
+                    if self.joint_index_to_name is not None:
                         joint_names = [self.joint_index_to_name.get(idx, f"?{idx}") for idx in group]
+
                     print(f"-- Group {i}: {group}")
                     if joint_names:
                         print(f"   Joint names: {joint_names}")
+                    print("   Joint trajectory over time (Batch 0):")
+                    for t in range(group_joints.shape[1]):
+                        joint_val_t = group_joints[0, t]  # shape: [len(group)]
+                        joint_val_str = ", ".join([f"{v.item():+.3f}" for v in joint_val_t])
+                        print(f"     t={t:2d}: [{joint_val_str}]")
+
                     print(f"   Variance: {group_var[0]}")
                     print(f"   Threshold: {threshold}")
                     print(f"   Violation: {violation[0]}")
