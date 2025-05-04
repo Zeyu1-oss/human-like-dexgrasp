@@ -51,8 +51,7 @@ class JointConsistency:
                 for group in self.selected_joint_groups
             ]
 
-
-    def forward(self, joint_state: torch.Tensor, debug: bool = False) -> torch.Tensor:
+    def forward(self, joint_state: torch.Tensor, opt_progress: float = 0.0, debug: bool = False) -> torch.Tensor:
         """
         joint_state: [B, H, DOF] - joint angle values across time horizon
         Returns:
@@ -101,9 +100,13 @@ class JointConsistency:
                 constraint_list.append(violation)
 
             constraint_tensor = torch.stack(constraint_list, dim=-1).sum(dim=-1)  # [B, H]
-            final_cost = self.weight * constraint_tensor
+
+            # 🌟 增强惩罚强度：随 opt_progress 增长 (指数型)
+            scale = (opt_progress + 1e-3) ** 3
+            final_cost = self.weight * scale * constraint_tensor
 
             if debug:
-                print(f"\n>> Final Joint Consistency Cost (batch 0): {final_cost[0]}")
+                print(f">> Progress-scaled factor: {scale:.4f}")
+                print(f">> Final Joint Consistency Cost (batch 0): {final_cost[0]}")
 
             return final_cost
