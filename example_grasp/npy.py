@@ -27,7 +27,7 @@ def load_and_print_npy(file_path):
         print(f"First few elements: {data[:3]}")
 def main():
     # 
-    file_path = '/home/rose/DexGraspBench/output/debug_shadow/graspdata/core_mug_4f9f31db3c3873692a6f53dd95fd4468/scale008_pose001/0.npy'  # 替换为你文件的实际路径
+    file_path = '/home/rose/DexGraspBench/output/debug_shadow/graspdata/core_bottle_1a7ba1f4c892e2da30711cdbdbc73924/scale008_pose000/0.npy'  # 替换为你文件的实际路径
     load_and_print_npy(file_path)
 
 if __name__ == "__main__":

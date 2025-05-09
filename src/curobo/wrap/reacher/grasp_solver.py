@@ -602,7 +602,7 @@ class GraspSolver(GraspSolverConfig):
         # create goal buffer:
         goal_buffer = self.update_goal_buffer(solve_state, retract_config, link_poses)#random goal，Goal()
 
-        coord_position_seed = self.get_seed(  #random seeds，[batch_size * num_seeds, 1, dof]
+        coord_position_seed = self.get_seed(  #random seeds，[batch_size * num_seeds, 1, 22dof]
             num_seeds, goal_buffer.goal_pose, use_nn_seed, seed_config
         )
 
@@ -671,7 +671,7 @@ class GraspSolver(GraspSolverConfig):
         if seed_config is None: #none
             coord_position_seed = self.generate_seed( #random seeds
                 num_seeds=num_seeds, #20
-                batch=goal_pose.batch, #40
+                batch=goal_pose.batch, 
                 use_nn_seed=use_nn_seed,
             )
         elif seed_config.shape[1] < num_seeds:
@@ -730,12 +730,12 @@ class GraspSolver(GraspSolverConfig):
         Returns:
             [type]: [description]
         """
-        num_random_seeds = num_seeds #20
+        num_random_seeds = num_seeds
         seed_list = []
         if use_nn_seed and self.grasp_nn_seeder is not None:
             raise NotImplementedError
         if num_random_seeds > 0: #num_random_seeds=20
-            random_seed = self.q_sample_gen.get_samples(batch, num_random_seeds)#batch=40 num_random_seeds=20
+            random_seed = self.q_sample_gen.get_samples(batch, num_random_seeds)
             seed_list.append(random_seed)
         coord_position_seed = torch.cat(seed_list, dim=1)
         return coord_position_seed

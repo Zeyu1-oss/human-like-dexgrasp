@@ -51,7 +51,7 @@ class JointConsistency:
                 for group in self.selected_joint_groups
             ]
 
-    def forward(self, joint_state: torch.Tensor, opt_progress: float = 0.0, debug: bool = False) -> torch.Tensor:
+    def forward(self, joint_state: torch.Tensor, debug: bool = False) -> torch.Tensor:
         """
         joint_state: [B, H, DOF] - joint angle values across time horizon
         Returns:
@@ -64,49 +64,40 @@ class JointConsistency:
                 print("   Mapped joint groups (indices):", self.selected_joint_groups)
 
             constraint_list = []
+
             for i, group in enumerate(self.selected_joint_groups):
                 group_joints = joint_state[..., group]  # [B, H, len(group)]
-                group_var = group_joints.var(dim=-1)  # [B, H]
+                group_var = group_joints.var(dim=-1)    # [B, H]
 
                 threshold = self.group_allowed_diff[i]
                 if not isinstance(threshold, torch.Tensor):
                     threshold = torch.tensor(threshold, device=group_var.device, dtype=group_var.dtype)
+
                 violation = torch.clamp(group_var - threshold, min=0.0)  # [B, H]
 
-                if self.group_weight is not None:
-                    weight = self.group_weight[i]
-                    if not isinstance(weight, torch.Tensor):
-                        weight = torch.tensor(weight, device=violation.device, dtype=violation.dtype)
-                    violation = violation * weight
+                weight = self.group_weight[i] if self.group_weight is not None else 1.0
+                if not isinstance(weight, torch.Tensor):
+                    weight = torch.tensor(weight, device=violation.device, dtype=violation.dtype)
+
+                violation = violation * weight
 
                 if debug:
                     joint_names = None
                     if self.joint_index_to_name is not None:
                         joint_names = [self.joint_index_to_name.get(idx, f"?{idx}") for idx in group]
-
                     print(f"-- Group {i}: {group}")
                     if joint_names:
                         print(f"   Joint names: {joint_names}")
-                    print("   Joint trajectory over time (Batch 0):")
-                    for t in range(group_joints.shape[1]):
-                        joint_val_t = group_joints[0, t]  # shape: [len(group)]
-                        joint_val_str = ", ".join([f"{v.item():+.3f}" for v in joint_val_t])
-                        print(f"     t={t:2d}: [{joint_val_str}]")
-
-                    print(f"   Variance: {group_var[0]}")
+                    print(f"   Variance (Batch 0): {group_var[0]}")
                     print(f"   Threshold: {threshold}")
-                    print(f"   Violation: {violation[0]}")
+                    print(f"   Violation (Batch 0): {violation[0]}")
 
                 constraint_list.append(violation)
 
             constraint_tensor = torch.stack(constraint_list, dim=-1).sum(dim=-1)  # [B, H]
-
-            # 🌟 增强惩罚强度：随 opt_progress 增长 (指数型)
-            scale = (opt_progress + 1e-3) ** 3
-            final_cost = self.weight * scale * constraint_tensor
+            final_cost = self.weight * constraint_tensor  # [B, H]
 
             if debug:
-                print(f">> Progress-scaled factor: {scale:.4f}")
                 print(f">> Final Joint Consistency Cost (batch 0): {final_cost[0]}")
 
             return final_cost

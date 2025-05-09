@@ -281,7 +281,7 @@ class ArmReacher(ArmBase, ArmReacherConfig):
         self.update_params(Goal(current_state=self._start_state))
         #print("entede armreacher")
 
-    def cost_fn(self, state: KinematicModelState, action_batch=None, opt_progress=1.0, debug_flag=False):
+    def cost_fn(self, state: KinematicModelState, action_batch=None, opt_progress=1.0, debug_flag=True):
         """
         Compute cost given that state dictionary and actions
 
@@ -353,22 +353,18 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                 and torch.any(self.joint_consistency_cost.weight != 0)
             ):
                 joint_state = state_batch.position  # [B, H, DOF]
-                # 🔍 DEBUG: 检查 joint_state 的 DOF 顺序是否与 joint_names 一致
-                print("🔍 [DEBUG] Verifying joint_state index mapping:")
 
-                # 打印第一个 batch、第一个时间步（B=0, H=0）下前几个 joint 值及其对应名称
-                for i in range(min(joint_state.shape[-1], 22)):
-                    joint_name = self.state_bounds.joint_names[i]
-                    joint_value = joint_state[0, 0, i].item()
-                    print(f"  Index {i:2d}: Joint '{joint_name}' -> Value: {joint_value:.6f}")
-                print(f"joint_state shape: {joint_state.shape}")
+                if debug_flag:
+                    print("🔍 [DEBUG] Verifying joint_state index mapping:")
 
-                joint_cons_cost = self.joint_consistency_cost.forward(
-                    joint_state, opt_progress=opt_progress, debug=debug_flag
-                )
+                    for i in range(min(joint_state.shape[-1], 22)):
+                        joint_name = self.state_bounds.joint_names[i]
+                        joint_value = joint_state[0, 0, i].item()
+                        print(f"  Index {i:2d}: Joint '{joint_name}' -> Value: {joint_value:.6f}")
+                    print(f"joint_state shape: {joint_state.shape}")
+
+                joint_cons_cost = self.joint_consistency_cost.forward(joint_state)
                 cost_list.append(joint_cons_cost)
-
-
 
                  
         if (
