@@ -40,7 +40,6 @@ from curobo.rollout.cost.joint_consistency import JointConsistency, JointConsist
 # Local Folder
 from .arm_base import ArmBase, ArmBaseConfig, ArmCostConfig
 
-
 @dataclass
 class ArmReacherMetrics(RolloutMetrics):
     cspace_error: Optional[T_BValue_float] = None
@@ -214,17 +213,31 @@ class ArmReacher(ArmBase, ArmReacherConfig):
             joint_cfg = self.cost_cfg.joint_consistency_cfg
 
             if isinstance(joint_cfg.selected_joint_groups[0][0], str):
-                joint_name_to_index = {
-                    name: i for i, name in enumerate(self.state_bounds.joint_names)
-                }
-                joint_cfg.selected_joint_groups = [
-                    [joint_name_to_index[name] for name in group]
-                    for group in joint_cfg.selected_joint_groups
+                # ✅ 显式写出关节顺序（Shadow Hand 常用顺序）
+                joint_names = [
+                    'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
+                    'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
+                    'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
+                    'rh_RFJ4', 'rh_RFJ3', 'rh_RFJ2', 'rh_RFJ1',
+                    'rh_LFJ5', 'rh_LFJ4', 'rh_LFJ3', 'rh_LFJ2', 'rh_LFJ1'
                 ]
+                joint_name_to_index = {name: i for i, name in enumerate(joint_names)}
+
+                try:
+                    joint_cfg.selected_joint_groups = [
+                        [joint_name_to_index[name] for name in group]
+                        for group in joint_cfg.selected_joint_groups
+                    ]
+                except KeyError as e:
+                    raise ValueError(
+                        f"关节名称 '{e.args[0]}' 不在显式定义的 joint_names 中，请检查拼写。\n"
+                        f"支持的关节名为: {joint_names}"
+                    )
 
             self.joint_consistency_cost = JointConsistency(joint_cfg)
         else:
             self.joint_consistency_cost = None
+
             
         if self.cost_cfg.link_pose_cfg is not None:
             for i in self.kinematics.link_names:

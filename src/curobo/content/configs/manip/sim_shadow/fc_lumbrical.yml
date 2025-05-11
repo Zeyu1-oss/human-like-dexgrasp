@@ -7,7 +7,7 @@ world:
     id:    
     start: 0
     end: 100
-    repeat: 1
+    repeat: 4
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json
   urdf_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/urdf/coacd.urdf

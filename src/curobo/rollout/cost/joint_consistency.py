@@ -8,7 +8,7 @@ from curobo.rollout.cost.cost_base import CostConfig
 class JointConsistencyConfig(CostConfig):
     group_allowed_diff: List[float] = None
     selected_joint_groups: List[Union[List[int], List[str]]] = None  # 每组关节名或索引
-    group_weight: Optional[List[float]] = None  # 每组惩罚权重（可选）
+    group_weight: Optional[List[float]] = None  # 每组惩罚权重
 
     def __post_init__(self):
         super().__post_init__()
@@ -32,11 +32,11 @@ class JointConsistency:
         self.group_weight = config.group_weight
         self.selected_joint_groups = config.selected_joint_groups
 
-        self.joint_index_to_name = None  # 用于 debug 输出 joint 名称
+        self.joint_index_to_name = None  
 
-        # joint name 转换为 index，并建立调试映射
+        # joint name 转换为 index
         if joint_name_to_index_fn is not None and isinstance(self.selected_joint_groups[0][0], str):
-            # 构造 joint name → index 映射 & index → name 映射
+            
             name_index_pairs = [
                 (name, joint_name_to_index_fn(name))
                 for group in self.selected_joint_groups for name in group
@@ -57,6 +57,7 @@ class JointConsistency:
         Returns:
             A cost tensor of shape [B, H], representing the joint consistency penalty.
         """
+        debug=True
         with torch.autograd.profiler.record_function("cost/joint_consistency"):
             if debug:
                 print("=== [JointConsistency Debug Info] ===")

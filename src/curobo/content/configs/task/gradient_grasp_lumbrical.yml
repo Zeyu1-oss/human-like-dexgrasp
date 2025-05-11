@@ -45,16 +45,17 @@ cost:
     classify: False
     activation_distance: 0.002
   joint_consistency_cfg:
-    weight: 1500
-    group_allowed_diff: [0.3, 0.05]
-    group_weight: [2, 1]
+    weight: 3000
+    group_allowed_diff: [0.05,0.05]
+    group_weight: [1,1]
     selected_joint_groups:
+     - ['rh_FFJ4', 'rh_MFJ4', 'rh_RFJ4', 'rh_LFJ4']
+
      - ['rh_FFJ3', 'rh_MFJ3', 'rh_RFJ3', 'rh_LFJ3']
-     - ['rh_FFJ4', 'rh_MFJ4', 'rh_RFJ4', 'rh_LFJ4']  # 指末端
 
 lbfgs:
   n_iters: 500      # iterations in optimization
-  inner_iters: 50
+  inner_iters: 100
   lr_decay_rate: 0.95
   cold_start_n_iters: null
   min_iters: 20
