@@ -613,7 +613,7 @@ class GraspSolver(GraspSolverConfig):
         result = self.solver.solve(goal_buffer, coord_position_seed)
         if newton_iters is not None:
             self.solver.newton_optimizer.outer_iters = self.og_newton_iters
-        grasp_result = self.get_result(num_seeds, result, goal_buffer.goal_pose, return_seeds)#从优化结果中提取关键数据,contact point/force....
+        grasp_result = self.get_result(num_seeds, result, goal_buffer.goal_pose, return_seeds)
 
         return grasp_result
 

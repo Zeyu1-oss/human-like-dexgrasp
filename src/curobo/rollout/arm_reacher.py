@@ -35,7 +35,7 @@ from curobo.util.logger import log_error, log_info, log_warn
 from curobo.util.tensor_util import cat_max, cat_sum
 from curobo.util.torch_utils import get_torch_jit_decorator
 from curobo.rollout.cost.joint_consistency import JointConsistency, JointConsistencyConfig
-
+from curobo.rollout.cost.bending_cost import JointBendingConfig, JointBending
 
 # Local Folder
 from .arm_base import ArmBase, ArmBaseConfig, ArmCostConfig
@@ -107,6 +107,8 @@ class ArmReacherCostConfig(ArmCostConfig):
     zero_jerk_cfg: Optional[CostConfig] = None
     link_pose_cfg: Optional[PoseCostConfig] = None
     joint_consistency_cfg: Optional[JointConsistency] = None
+    joint_bending_cfg: Optional[JointBendingConfig] = None
+
     @staticmethod
     def _get_base_keys():
         base_k = ArmCostConfig._get_base_keys()
@@ -119,6 +121,7 @@ class ArmReacherCostConfig(ArmCostConfig):
             "zero_vel_cfg": CostConfig,
             "zero_jerk_cfg": CostConfig,
             "link_pose_cfg": PoseCostConfig,
+            "joint_bending_cfg": JointBendingConfig
         }
         new_k.update(base_k)
         return new_k
@@ -205,7 +208,7 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                 )
                 self.cost_cfg.link_pose_cfg = self.cost_cfg.pose_cfg
         self._link_pose_costs = {}
-        # ✅ 初始化 joint consistency cost
+
         if (
             hasattr(self.cost_cfg, "joint_consistency_cfg")
             and self.cost_cfg.joint_consistency_cfg is not None
@@ -213,8 +216,8 @@ class ArmReacher(ArmBase, ArmReacherConfig):
             joint_cfg = self.cost_cfg.joint_consistency_cfg
 
             if isinstance(joint_cfg.selected_joint_groups[0][0], str):
-                # ✅ 显式写出关节顺序（Shadow Hand 常用顺序）
                 joint_names = [
+                    'rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8',
                     'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
                     'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
                     'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
@@ -230,13 +233,44 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                     ]
                 except KeyError as e:
                     raise ValueError(
-                        f"关节名称 '{e.args[0]}' 不在显式定义的 joint_names 中，请检查拼写。\n"
-                        f"支持的关节名为: {joint_names}"
+                        f"joints name '{e.args[0]}' not in list joint_names \n"
+                        f"allowed joints: {joint_names}"
                     )
 
             self.joint_consistency_cost = JointConsistency(joint_cfg)
         else:
             self.joint_consistency_cost = None
+
+        if (
+            hasattr(self.cost_cfg, "joint_bending_cfg")
+            and self.cost_cfg.joint_bending_cfg is not None
+        ):
+            bending_cfg = self.cost_cfg.joint_bending_cfg
+
+            if isinstance(bending_cfg.selected_joints[0], str):
+                # 
+                joint_names = [
+                    'tx','ty','tz','qw ','qx','qy','qz',
+                    'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
+                    'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
+                    'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
+                    'rh_RFJ4', 'rh_RFJ3', 'rh_RFJ2', 'rh_RFJ1',
+                    'rh_LFJ5', 'rh_LFJ4', 'rh_LFJ3', 'rh_LFJ2', 'rh_LFJ1'
+                ]
+                name_to_idx = {name: i for i, name in enumerate(joint_names)}
+
+                try:
+                    bending_cfg.selected_joints = [
+                        name_to_idx[name] for name in bending_cfg.selected_joints
+                    ]
+                except KeyError as e:
+                    raise ValueError(
+                        f"joints name '{e.args[0]}' not in list joint_names \n"
+                        f"allowed joints: {joint_names}"
+                    )
+            self.joint_bending_cost = JointBending(bending_cfg)
+        else:
+            self.joint_bending_cost = None
 
             
         if self.cost_cfg.link_pose_cfg is not None:
@@ -358,6 +392,15 @@ class ArmReacher(ArmBase, ArmReacherConfig):
 
                             c = current_fn.forward(current_pos, current_quat, self._goal_buffer, k)
                             cost_list.append(c)
+        with profiler.record_function("cost/joint_bending"):
+            if (
+                self.joint_bending_cost is not None
+                and self.joint_bending_cost.weight is not None
+                and torch.any(self.joint_bending_cost.weight != 0)
+            ):
+                joint_state = state_batch.position  # [B, H, DOF]
+                bending_cost = self.joint_bending_cost.forward(joint_state)
+                cost_list.append(bending_cost)
                             
         with profiler.record_function("cost/joint_consistency"):
             if (

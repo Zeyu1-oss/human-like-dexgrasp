@@ -69,7 +69,7 @@
       <child link="rh_ffknuckle"/>
       <origin xyz="0.033 0.0 0.095" rpy="0.0 0.0 0.0"/>
       <axis xyz="0.0 -1.0 0.0"/>
-      <limit lower="-0.349066" upper="0.349066" effort="100" velocity="100"/>
+      <limit lower="0" upper="0.1" effort="100" velocity="100"/>
    </joint>
    <link name="rh_ffproximal">
       <visual name="f_proximal">
@@ -101,7 +101,7 @@
       <child link="rh_ffmiddle"/>
       <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="0.5" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_ffdistal">
       <visual name="f_distal_pst">
@@ -117,7 +117,7 @@
       <child link="rh_ffdistal"/>
       <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="1" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_mfknuckle">
       <visual name="f_knuckle">
@@ -133,7 +133,7 @@
       <child link="rh_mfknuckle"/>
       <origin xyz="0.011 0.0 0.099" rpy="0.0 0.0 0.0"/>
       <axis xyz="0.0 -1.0 0.0"/>
-      <limit lower="-0.349066" upper="0.349066" effort="100" velocity="100"/>
+      <limit lower="0" upper="0.1" effort="100" velocity="100"/>
    </joint>
    <link name="rh_mfproximal">
       <visual name="f_proximal">
@@ -165,7 +165,7 @@
       <child link="rh_mfmiddle"/>
       <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="0.5" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_mfdistal">
       <visual name="f_distal_pst">
@@ -181,7 +181,7 @@
       <child link="rh_mfdistal"/>
       <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="1" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_rfknuckle">
       <visual name="f_knuckle">
@@ -197,7 +197,7 @@
       <child link="rh_rfknuckle"/>
       <origin xyz="-0.011 0.0 0.095" rpy="0.0 0.0 0.0"/>
       <axis xyz="0.0 1.0 0.0"/>
-      <limit lower="-0.349066" upper="0.349066" effort="100" velocity="100"/>
+      <limit lower="0" upper="0.1" effort="100" velocity="100"/>
    </joint>
    <link name="rh_rfproximal">
       <visual name="f_proximal">
@@ -229,7 +229,7 @@
       <child link="rh_rfmiddle"/>
       <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="0.5" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_rfdistal">
       <visual name="f_distal_pst">
@@ -245,7 +245,7 @@
       <child link="rh_rfdistal"/>
       <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="1" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_lfmetacarpal">
       <visual name="lf_metacarpal">
@@ -263,7 +263,7 @@
       <axis xyz="0 0 1"/>
       <!-- <origin xyz="-0.033 0.0 0.02071" rpy="0.0 0.0 0.0"/>
       <axis xyz="0.5735761643640092 0.0 0.819152234736298"/> -->
-      <limit lower="0.0" upper="0.785398" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_lfknuckle">
       <visual name="f_knuckle">
@@ -280,7 +280,7 @@
        <!-- <origin xyz="0.0 0.0 0.06579" rpy="0.0 0.0 0.0"/> -->
       <origin xyz="-0.03773558 0. 0.05389203" rpy="0 -0.6108649061631908 0"/>
       <axis xyz="0.0 1.0 0.0"/>
-      <limit lower="-0.349066" upper="0.349066" effort="100" velocity="100"/>
+      <limit lower="0" upper="0.1" effort="100" velocity="100"/>
    </joint>
    <link name="rh_lfproximal">
       <visual name="f_proximal">
@@ -312,7 +312,7 @@
       <child link="rh_lfmiddle"/>
       <origin xyz="0.0 0.0 0.045" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="0.5" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_lfdistal">
       <visual name="f_distal_pst">
@@ -328,7 +328,7 @@
       <child link="rh_lfdistal"/>
       <origin xyz="0.0 0.0 0.025" rpy="0.0 0.0 0.0"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="1" upper="1.5708" effort="100" velocity="100"/>
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100"/>
    </joint>
    <link name="rh_thbase"/>
    <joint type="revolute" name="rh_THJ5">

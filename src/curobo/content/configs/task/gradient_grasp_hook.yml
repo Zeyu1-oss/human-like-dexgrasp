@@ -27,7 +27,7 @@ model:
 
 cost:
   grasp_cfg:
-    weight: [100, 1000, 10] # grasp loss, dist loss, regu loss
+    weight: [100, 1000, 10]      # grasp loss, dist loss, regu loss
     perturb_strength_bound: [0.01, 0.02]
   cspace_cfg:
     weight: 0.0
@@ -45,11 +45,18 @@ cost:
     classify: False
     activation_distance: 0.002
 
+  joint_bending_cfg:
+    weight: 2            # 
+    selected_joints:            # 
+      ['qw ','qx','qy','qz','rh_FFJ3','rh_FFJ2','rh_FFJ1','rh_MFJ3','rh_MFJ2','rh_MFJ1','rh_RFJ3','rh_RFJ2','rh_RFJ1','rh_LFJ3','rh_LFJ2','rh_LFJ1']
+    target_angles: [0.7071, 0.0, 0.7071, 0.0, 0.0,1,1.5, 1.5,1, 1.5, 1.5,1, 1.5, 1.5,1, 1.5, 1.5]
+    joint_weights:  [2,2,2,2,1,1.5, 1.5, 1,1.5, 1.5, 1,1.5, 1.5,1, 1.5, 1.5]
+
 
 
 lbfgs:
   n_iters: 500      # iterations in optimization
-  inner_iters: 50
+  inner_iters: 100
   lr_decay_rate: 0.95
   cold_start_n_iters: null
   min_iters: 20

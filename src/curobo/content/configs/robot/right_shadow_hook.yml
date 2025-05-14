@@ -26,7 +26,8 @@ robot_cfg:
     isaac_usd_path: ""
     usd_flip_joints: {}
     usd_flip_joint_limits: []
-
+ 
+ 
     urdf_path: "robot/shadow_hand/right_sim_hook.urdf"
     asset_root_path: "robot/shadow_hand"
     # urdf_path: "robot/sr_grasp_description/urdf/shadowhand_wrist_free.urdf"

@@ -32,7 +32,8 @@ seed = 123
 np.random.seed(seed)
 torch.manual_seed(seed)
 random.seed(seed)
-
+torch.cuda.empty_cache()
+torch.cuda.ipc_collect()
 
 def process_grasp_result(result, save_debug, save_data, save_id):
     traj = result.debug_info['solver']['steps'][0] 

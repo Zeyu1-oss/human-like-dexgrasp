@@ -7,7 +7,7 @@ world:
     id:    
     start: 0
     end: 100
-    repeat: 4
+    repeat: 8
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json
   urdf_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/urdf/coacd.urdf
@@ -20,12 +20,12 @@ world:
 robot_file: "right_shadow_hook.yml"
 
 robot_file_with_arm: "ur10e_shadow_sim.yml"
-base_cfg_file: "base_grasp_joint_cons.yml"
+base_cfg_file: "base_grasp.yml"
 particle_file: "particle_grasp_debug.yml"
-gradient_file: "gradient_grasp_joint.yml"
+gradient_file: "gradient_grasp_hook.yml"
 
 exp_name: 'debug'
-seed_num: 8
+seed_num: 20
 seeder_cfg:
   obj_sample:
     num: 128
@@ -43,10 +43,7 @@ seeder_cfg:
 
 grasp_contact_strategy:
   contact_points_name:
-     ['rh_thdistal/1',  # 拇指远端，抵住杯把
-     'rh_ffmiddle/0', 'rh_ffdistal/1',  # 食指
-     'rh_mfmiddle/0', 'rh_mfdistal/1',  # 中指
-     'rh_rfmiddle/0', 'rh_rfdistal/2','rh_lfproximal/0','rh_lfdistal/2']  # 无名指
+     [  'rh_ffdistal/1','rh_mfdistal/1',  'rh_rfdistal/1',  'rh_lfdistal/1' ,'rh_thdistal/1','rh_palm/0']
 
   opt_progress: [0.0, 0.6, 0.8]
   distance: [0.01, 0.01, 0.0]
@@ -67,11 +64,10 @@ grasp_cfg:
     solver_type: 'batch_reluqp'
     k_lower: 0.2
     pressure_constraints:
-      [ [[0, 1, 2, 3], 1.0], 
-        [[0, 1, 2, 3, 4, 5, 6], 1.0],                       
-        [[0], 0.3],                              
-        [[1, 2, 3, 4, 5, 6], 0.8]                  
-       ]                  # 可额外加入 ring finger distal
+      [[[0, 1, 2, 3,4], 1.0],
+        [[0, 1, 2,3], 0.4], 
+        [[3], 0.5]
+      ]               
 
     enable_density: False
     solve_interval: 5

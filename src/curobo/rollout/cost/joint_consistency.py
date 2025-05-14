@@ -100,5 +100,6 @@ class JointConsistency:
 
             if debug:
                 print(f">> Final Joint Consistency Cost (batch 0): {final_cost[0]}")
+                print("Selected joint values (batch0, seed0):", joint_state[0, 0, :].tolist())
 
             return final_cost
