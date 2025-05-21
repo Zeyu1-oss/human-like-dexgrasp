@@ -14,5 +14,4 @@ Original BODex Resources:
 ## 🧪 Example: Generate Lumbrical Grasp
 
 ```bash
-python src/main.py\task=format\task.data_path=/home/rose/BODex/src/curobo/content/assets/output/sim_shadow/fc_lumbrical/debug/graspdata
-
+CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_spherical.yml -w 
