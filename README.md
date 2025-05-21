@@ -13,9 +13,7 @@ Original BODex Resources:
 
 ## 🚀 Quick Start
 
-### 1. Create Environment
-
-```bash
-conda create -n dexgrasp python=3.10 -y
-conda activate dexgrasp
-pip install -r requirements.txt
+ Example: Generate Lumbrical Grasp
+ python src/main.py \
+    task=format \
+    task.data_path=/home/rose/BODex/src/curobo/content/assets/output/sim_shadow/fc_lumbrical/debug/graspdata
