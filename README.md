@@ -1,4 +1,4 @@
-# 🤖 Human-Like Grasp Synthesis (Based on BODex)
+#  Human-Like Grasp Synthesis (Based on BODex)
 
 This repository contains my **semester project** at the Technical University of Munich (TUM), built on top of [BODex](https://github.com/JYChen18/BODex).  
 The goal of this project is to explore **human-inspired dexterous grasp synthesis** using BODex’s efficient GPU-based pipeline.  
@@ -11,7 +11,7 @@ Original BODex Resources:
 
 ---
 
-## 🧪 Example: Generate Lumbrical Grasp
+## 1. Generate Lumbrical Grasp
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_lumbrical.yml -w 
