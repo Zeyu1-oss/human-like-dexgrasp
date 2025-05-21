@@ -14,7 +14,5 @@ Original BODex Resources:
 ## 🧪 Example: Generate Lumbrical Grasp
 
 ```bash
-python src/main.py \
-    task=format \
-    task.data_path=/home/rose/BODex/src/curobo/content/assets/output/sim_shadow/fc_lumbrical/debug/graspdata
+python src/main.py\task=format\task.data_path=/home/rose/BODex/src/curobo/content/assets/output/sim_shadow/fc_lumbrical/debug/graspdata
 
