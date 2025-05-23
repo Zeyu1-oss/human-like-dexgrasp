@@ -1,4 +1,4 @@
-**Human-Like Grasp Synthesis (*Ongoing | 2025.03 – Present)**  
+**Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)**  
 
 This repository contains my **semester project** at the Technical University of Munich (TUM), built on top of [BODex](https://github.com/JYChen18/BODex).  
 The goal of this project is to explore **human-inspired dexterous grasp synthesis** using BODex’s efficient GPU-based pipeline.  
