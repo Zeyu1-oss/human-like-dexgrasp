@@ -16,6 +16,9 @@ Original BODex Resources:
 ```bash
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_lumbrical.yml -w
 
+
+---
+
 ## 2. Generate Spherical Grasp
 
 ```bash
