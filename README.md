@@ -6,7 +6,7 @@ Specifically, I extend the original framework to generate grasp poses that mimic
 
 🔧 This project is under active development, and mainly focuses on learning, prototyping, and validating task-oriented grasp synthesis approaches inspired by the way humans grasp objects.
 
-🔍 Method Extension
+🔍 Engergy Extension
 To better capture the characteristics of human grasping, I introduce joint-level constraints and energy terms based on:
 
 Joint Consistency energy: to ensure that finger joints within a group move in a coordinated way, supporting poses like hook and lumbrical grasps.
