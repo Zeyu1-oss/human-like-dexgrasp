@@ -16,7 +16,13 @@ Joint Bending Energy: to encourage natural finger flexion patterns aligned with 
 These customized energy components guide the optimization towards more structured and human-like grasp poses while maintaining stability and force closure.
 Original BODex Resources:  
 [📄 Project page](https://pku-epic.github.io/BODex) ｜ [📑 Paper](https://arxiv.org/abs/2412.16490) ｜ [🗃️ Dataset](https://huggingface.co/datasets/JiayiChenPKU/BODex) ｜ [💻 Benchmark code](https://github.com/JYChen18/DexGraspBench)
-[Lumbrical Grasp example]![image](https://github.com/user-attachments/assets/9d64d609-d9a1-4519-94a1-816f82c4e511)[power Grasp example]![image](https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb)
+### 📸 Grasp Examples
+
+- **Lumbrical Grasp Example**  
+  <img src="https://github.com/user-attachments/assets/9d64d609-d9a1-4519-94a1-816f82c4e511" width="400"/>
+
+- **Power Grasp Example**  
+  <img src="https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb" width="400"/>
 
 
 ---
