@@ -35,6 +35,8 @@ CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_s
 
 ```
 ## 3. Random power Grasp
+[power Grasp example]![image](https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb)
+
 ```bash
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_power.yml -w 20
 
