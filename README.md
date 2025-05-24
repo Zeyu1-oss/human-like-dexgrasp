@@ -1,11 +1,19 @@
 **Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)**  
 
-This repository contains my **semester project** at the Technical University of Munich (TUM), built on top of [BODex](https://github.com/JYChen18/BODex).  
-The goal of this project is to explore **Human-like Robotic Dexterous Grasp Synthesis** using BODex’s efficient GPU-based pipeline.  
-Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, such as two-finger pinch, three-finger tripod, and five-finger hook, lumbrical ,spherical grasps.
+This repository contains my semester project at the Technical University of Munich (TUM), built on top of BODex.
+The goal of this project is to explore Human-like Robotic Dexterous Grasp Synthesis using BODex’s efficient GPU-based pipeline.
+Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, such as two-finger pinch, three-finger tripod, and five-finger hook, lumbrical, and spherical grasps.
 
-> 🔧 This project is under active development, and mainly focuses on learning, prototyping, and validating **task-oriented grasp synthesis** approaches inspired by the way humans grasp objects.
+🔧 This project is under active development, and mainly focuses on learning, prototyping, and validating task-oriented grasp synthesis approaches inspired by the way humans grasp objects.
 
+🔍 Method Extension
+To better capture the characteristics of human grasping, I introduce joint-level constraints and energy terms based on:
+
+Joint Consistency energy: to ensure that finger joints within a group move in a coordinated way, supporting poses like hook and lumbrical grasps.
+
+Joint Bending Energy: to encourage natural finger flexion patterns aligned with specific human grasp types.
+
+These customized energy components guide the optimization towards more structured and human-like grasp poses while maintaining stability and force closure.
 Original BODex Resources:  
 [📄 Project page](https://pku-epic.github.io/BODex) ｜ [📑 Paper](https://arxiv.org/abs/2412.16490) ｜ [🗃️ Dataset](https://huggingface.co/datasets/JiayiChenPKU/BODex) ｜ [💻 Benchmark code](https://github.com/JYChen18/DexGraspBench)
 
