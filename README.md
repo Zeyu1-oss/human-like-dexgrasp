@@ -20,7 +20,7 @@ Original BODex Resources:
 
 - **Lumbrical Grasp Example**  
   <br>
-  <img src="https://github.com/user-attachments/assets/9d64d609-d9a1-4519-94a1-816f82c4e511" width="400"/>
+  <img src="https://github.com/user-attachments/assets/051551ca-5cf1-427d-9445-fe148e50008b" width="400"/>
 
 - **Power Grasp Example**  
   <br>
