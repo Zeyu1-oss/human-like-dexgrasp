@@ -18,15 +18,15 @@ Original BODex Resources:
 [📄 Project page](https://pku-epic.github.io/BODex) ｜ [📑 Paper](https://arxiv.org/abs/2412.16490) ｜ [🗃️ Dataset](https://huggingface.co/datasets/JiayiChenPKU/BODex) ｜ [💻 Benchmark code](https://github.com/JYChen18/DexGraspBench)
 ### 📸 Grasp Examples
 
-- **Lumbrical Grasp Example**  
+- **Lumbrical Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/051551ca-5cf1-427d-9445-fe148e50008b" width="400"/>
 
-- **Power Grasp Example**  
+- **Power Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb" width="400"/>
 
-- **Two-Finger Grasp Example**  
+- **Two-Finger Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/0757d264-2901-46ac-911b-318110bdf8c4" width="400"/>
 
