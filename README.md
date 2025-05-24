@@ -31,8 +31,9 @@ Original BODex Resources:
   <img src="https://github.com/user-attachments/assets/0757d264-2901-46ac-911b-318110bdf8c4" width="400"/>
 - **spherical Grasp Examples**  
   <br>
-  <img src="https://github.com/user-attachments/assets/529b18e8-41d4-4628-ad52-940f8fe26990" width="400"/>
+  <img src="https://github.com/user-attachments/assets/92870e3d-bf28-4638-843e-237cef38ab08" width="400"/>
 ---
+
 
 ## 1. Generate Lumbrical Grasp
 
