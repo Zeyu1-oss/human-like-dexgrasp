@@ -29,7 +29,7 @@ Original BODex Resources:
 - **Two-Finger Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/0757d264-2901-46ac-911b-318110bdf8c4" width="400"/>
-- **Two-Finger Grasp Examples**  
+- **spherical Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/c806e993-35da-457f-862b-b08fe986141c" width="400"/>
 ---
