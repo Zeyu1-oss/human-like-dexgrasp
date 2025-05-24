@@ -12,6 +12,7 @@ Original BODex Resources:
 ---
 
 ## 1. Generate Lumbrical Grasp
+[Lumbrical Grasp example]![image](https://github.com/user-attachments/assets/9d64d609-d9a1-4519-94a1-816f82c4e511)
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_lumbrical.yml -w 20
