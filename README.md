@@ -23,7 +23,8 @@ Original BODex Resources:
 
 - **Power Grasp Example**  
   <img src="https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb" width="400"/>
-
+- **two-finger Grasp Example**
+-  <img src="[https://github.com/user-attachments/assets/6d26ea27-15cb-476d-8799-1dd697e7382d))" width="400"/> 
 
 ---
 
