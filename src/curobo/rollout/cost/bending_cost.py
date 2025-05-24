@@ -129,7 +129,6 @@ class JointBending:
         final_cost = cost * self.weight
 
         # Debug output: show first few seeds
-        debug= True
         if debug:
             sample = final_cost[0, :min(final_cost.size(1), 5)].tolist()
             print("=== [JointBending Debug] ===")

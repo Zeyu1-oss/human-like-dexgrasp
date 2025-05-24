@@ -46,24 +46,27 @@ cost:
     activation_distance: 0.002
 
   joint_bending_cfg:
-    weight: 2            # 
+    weight: 5           # 
     selected_joints:            # 
-      ['rh_FFJ4','rh_MFJ4','rh_RFJ4','rh_LFJ4','rh_thJ1','rh_thJ2','rh_thJ3']
-    target_angles: [0, 0,0,0,0,0,0]
-    joint_weights:  [2,2,2,2,2,2,2]
-    
+      ['rh_FFJ4','rh_MFJ4','rh_RFJ4','rh_LFJ4','rh_LFJ5']
+    target_angles: [-0.4,0,-0.2,-0.1,0.3]
+    joint_weights:  [3, 3,3, 3,3]
+  
   joint_consistency_cfg:
     weight: 3000
-    group_allowed_diff: [0.05,0.05]
-    group_weight: [1,1]
+    group_allowed_diff: [0.1,0.05,0.05]
+    group_weight: [1,1,1]
     selected_joint_groups:
      - ['rh_FFJ1', 'rh_MFJ1', 'rh_RFJ1', 'rh_LFJ1']
+
      - ['rh_FFJ2', 'rh_MFJ2', 'rh_RFJ2', 'rh_LFJ2']
      - ['rh_FFJ3', 'rh_MFJ3', 'rh_RFJ3', 'rh_LFJ3']
 
 
 
+
 lbfgs:
+
   n_iters: 500      # iterations in optimization
   inner_iters: 100
   lr_decay_rate: 0.95

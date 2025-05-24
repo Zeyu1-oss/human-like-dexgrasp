@@ -217,7 +217,7 @@ class ArmReacher(ArmBase, ArmReacherConfig):
 
             if isinstance(joint_cfg.selected_joint_groups[0][0], str):
                 joint_names = [
-                    'rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8','rh_THJ8',
+                    'tx','ty','tz','qx','qy','qz','qw',
                     'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
                     'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
                     'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
@@ -250,7 +250,7 @@ class ArmReacher(ArmBase, ArmReacherConfig):
             if isinstance(bending_cfg.selected_joints[0], str):
                 # 
                 joint_names = [
-                    'tx','ty','tz','qw ','qx','qy','qz',
+                    'tx','ty','tz','qx','qy','qz','qw',
                     'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
                     'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
                     'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',

@@ -6,12 +6,12 @@ world:
     id_lst_path: object/DGN_obj/valid_split/bodex_all.json
     id:    
     start: 0
-    end: 100
-    repeat: 1
+    end: 2397
+    repeat: 4
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json
   urdf_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/urdf/coacd.urdf
-  fixed_scale_lst: [0.08, 0.08, 0.1, 0.1]
+  fixed_scale_lst: [0.06, 0.08, 0.1, 0.2]
   fixed_pose_lst: [[0.0, 0.0, 0.0, 1, 0, 0, 0.0]]
   # pose_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/tabletop_pose.json
 
@@ -41,7 +41,7 @@ seeder_cfg:
   jitter_dist: [[0.0, -0.03, -0.03], [0.03, 0.03, 0.03]]
 
 grasp_contact_strategy:
-  contact_points_name: ['rh_ffdistal/2', 'rh_mfdistal/2', 'rh_rfdistal/2', 'rh_lfdistal/2', 'rh_thdistal/1','rh_palm/7','rh_palm/6','rh_palm/5','rh_palm/4','rh_palm/3','rh_palm/2','rh_palm/1','rh_palm/0']
+  contact_points_name: ['rh_ffdistal/2', 'rh_mfdistal/2', 'rh_rfdistal/2', 'rh_lfdistal/2', 'rh_thdistal/1','rh_thproximal/0','rh_palm/7','rh_palm/5','rh_palm/4','rh_palm/2','rh_palm/0']
   opt_progress: [0.0, 0.6, 0.8]
   distance: [0.01, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
@@ -60,12 +60,14 @@ grasp_cfg:
     solver_type: 'batch_reluqp'
     k_lower: 0.2
     pressure_constraints:   # [contact_id_list, lower]
-      [[[0, 1, 2, 3, 4,5,6,7,8,9,10,11,12], 1.0],
-        [[0, 5,6,7,8,9,10,11,12], 0.4], 
-        [[1,5,6,7,8,9,10,11,12],0.4],
-        [[2,5,6,7,8,9,10,11,12],0.4],
-        [[3,5,6,7,8,9,10,11,12], 0.5],
-         [[4,5,6,7,8], 0.5]
+      [[[0, 1, 2, 3, 4,5,6,7,8,9,10], 1.0],
+        [[0,1,2, 5,6,7,8,9,10], 0.4], 
+        [[0,1,2,3,4,5],0.3],
+        [[1,2,3,5,6,7,8,9,10],0.4],
+        [[2,3,4,5,6,7,8,9,10],0.4],
+        [[3,5,6,7,8,9,10], 0.5],
+         [[4,5,6,7,8,9,10], 0.5]
+
       ]
     enable_density: False
     solve_interval: 5

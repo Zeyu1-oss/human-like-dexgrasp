@@ -57,7 +57,6 @@ class JointConsistency:
         Returns:
             A cost tensor of shape [B, H], representing the joint consistency penalty.
         """
-        debug=True
         with torch.autograd.profiler.record_function("cost/joint_consistency"):
             if debug:
                 print("=== [JointConsistency Debug Info] ===")

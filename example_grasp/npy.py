@@ -1,7 +1,6 @@
 import numpy as np
 
 def load_and_print_npy(file_path):
-    # 加载 .npy 文件
     data = np.load(file_path, allow_pickle=True)
     
     # 
