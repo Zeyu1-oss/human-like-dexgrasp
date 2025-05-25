@@ -1,19 +1,21 @@
-**Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)**  
+**Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)**
 
-This repository contains my semester project at the Technical University of Munich (TUM), built on top of BODex.
-The goal of this project is to explore Human-like Robotic Dexterous Grasp Synthesis using BODex’s efficient GPU-based pipeline.
-Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, such as two-finger pinch, three-finger tripod, and five-finger hook, lumbrical, and spherical grasps.
+This repository contains my semester project at the Technical University of Munich (TUM), built on top of BODex. The goal of this project is to explore Human-like Robotic Dexterous Grasp Synthesis using BODex’s efficient GPU-based pipeline. Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, such as two-finger pinch, three-finger tripod, and five-finger hook, lumbrical, and spherical grasps.
 
-🔧 This project is under active development, and mainly focuses on learning, prototyping, and validating task-oriented grasp synthesis approaches inspired by the way humans grasp objects.
+🔧 **Project Focus**
+This project is under active development, primarily emphasizing the learning, prototyping, and validation of task-oriented grasp synthesis methods inspired by human grasping behaviors.
 
-🔍 Engergy Extension
-To better capture the characteristics of human grasping, I introduce joint-level constraints and energy terms based on:
+🔍 **Energy Extensions**
+To better replicate human grasp characteristics, I introduce joint-level constraints and energy terms:
 
-Joint Consistency energy: to ensure that finger joints within a group move in a coordinated way, supporting poses like hook and lumbrical grasps.
+* **Joint Consistency Energy:** Ensures coordinated finger joint movements within a group, facilitating realistic poses like hook and lumbrical grasps.
+* **Joint Bending Energy:** Promotes natural finger flexion patterns aligned with specific human grasp types.
 
-Joint Bending Energy: to encourage natural finger flexion patterns aligned with specific human grasp types.
+These customized energy components guide optimization toward structured, stable, and human-like grasp poses that maintain force closure.
 
-These customized energy components guide the optimization towards more structured and human-like grasp poses while maintaining stability and force closure.
+🎯 **Final Goal**
+Ultimately, the aim is to generate a large-scale, high-quality grasp dataset to support future research on data-driven robotic grasping methods.
+
 Original BODex Resources:  
 [📄 Project page](https://pku-epic.github.io/BODex) ｜ [📑 Paper](https://arxiv.org/abs/2412.16490) ｜ [🗃️ Dataset](https://huggingface.co/datasets/JiayiChenPKU/BODex) ｜ [💻 Benchmark code](https://github.com/JYChen18/DexGraspBench)
 ### 📸 Grasp Examples
