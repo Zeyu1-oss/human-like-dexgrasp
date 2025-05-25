@@ -2,10 +2,10 @@
 
 This repository contains my semester project at the Technical University of Munich (TUM), built on top of BODex. The goal of this project is to explore Human-like Robotic Dexterous Grasp Synthesis using BODex’s efficient GPU-based pipeline. Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, such as two-finger pinch, three-finger tripod, and five-finger hook, lumbrical, and spherical grasps.
 
-🔧 **Project Focus**
+ **Project Focus**
 This project is under active development, primarily emphasizing the learning, prototyping, and validation of task-oriented grasp synthesis methods inspired by human grasping behaviors.
 
-🔍 **Energy Extensions**
+ **Energy Extensions**
 To better replicate human grasp characteristics, I introduce joint-level constraints and energy terms:
 
 * **Joint Consistency Energy:** Ensures coordinated finger joint movements within a group, facilitating realistic poses like hook and lumbrical grasps.
@@ -13,7 +13,7 @@ To better replicate human grasp characteristics, I introduce joint-level constra
 
 These customized energy components guide optimization toward structured, stable, and human-like grasp poses that maintain force closure.
 
-🎯 **Final Goal**
+**Final Goal**
 Ultimately, the aim is to generate a large-scale, high-quality grasp dataset to support future research on data-driven robotic grasping methods.
 
 Original BODex Resources:  
