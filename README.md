@@ -33,7 +33,7 @@ Original BODex Resources:
   <img src="https://github.com/user-attachments/assets/0757d264-2901-46ac-911b-318110bdf8c4" width="400"/>
 - **spherical Grasp Examples**  
   <br>
-  <img src="https://github.com/user-attachments/assets/92870e3d-bf28-4638-843e-237cef38ab08" width="400"/>
+  <img src="https://github.com/user-attachments/assets/8c947e39-9d69-48dc-877b-d0ecf7833c78" width="400"/>
 ---
 
 
