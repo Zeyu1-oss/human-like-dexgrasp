@@ -14,7 +14,7 @@ To better replicate human grasp characteristics, I introduce joint-level constra
 These customized energy components guide optimization toward structured, stable, and human-like grasp poses that maintain force closure.
 
 **Final Goal**
-Ultimately, the aim is to generate a large-scale, high-quality grasp dataset to support future research on data-driven robotic grasping methods.
+Ultimately, the aim is to generate a large-scale, high-quality grasp dataset based on different human-like grasp types to support future research on data-driven robotic grasping methods.
 
 Original BODex Resources:  
 [📄 Project page](https://pku-epic.github.io/BODex) ｜ [📑 Paper](https://arxiv.org/abs/2412.16490) ｜ [🗃️ Dataset](https://huggingface.co/datasets/JiayiChenPKU/BODex) ｜ [💻 Benchmark code](https://github.com/JYChen18/DexGraspBench)
