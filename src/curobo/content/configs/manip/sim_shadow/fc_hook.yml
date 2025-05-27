@@ -6,12 +6,12 @@ world:
     id_lst_path: object/DGN_obj/valid_split/hook.json
     id:    
     start: 0
-    end: 100
-    repeat: 8
+    end: 20
+    repeat: 4
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json
   urdf_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/urdf/coacd.urdf
-  fixed_scale_lst: [0.06, 0.08, 0.10,0.12]
+  fixed_scale_lst: [0.06, 0.08, 0.1,0.12]
   fixed_pose_lst: [[0.0, 0.0, 0.0, 1, 0, 0, 0.0]]
   # pose_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/tabletop_pose.json
 
@@ -25,7 +25,7 @@ particle_file: "particle_grasp_debug.yml"
 gradient_file: "gradient_grasp_hook.yml"
 
 exp_name: 'debug'
-seed_num: 20
+seed_num: 10
 seeder_cfg:
   obj_sample:
     num: 128
@@ -37,16 +37,16 @@ seeder_cfg:
   skip_transfer: False
   t:  
   r:  
-  q: [ 0, 1.2, 0, -0.2, 0, -0.1, 0.3, 0., 0., 0, 0.3, 0., 0., -0.1, 0.3, 0., 0., 0, -0.2, 0.3, 0., 0.] # qpose: TH, FF, MF, RF, LF
+  q: [ 0, 1.2, 0, -0.2, 0, -0.1, 0.3, 0., 0., 0, 0.3, 0., 0., -0.1, 0.3, 0., 0., 0, -0.2, 0.3, 0., 0.]
   jitter_angle: [[-180, -15, -15], [180, 15, 15]]
   jitter_dist: [[0.0, -0.03, -0.03], [0.03, 0.03, 0.03]]
 
 grasp_contact_strategy:
   contact_points_name:
-     [  'rh_ffdistal/1','rh_mfdistal/1',  'rh_rfdistal/1',  'rh_lfdistal/1' ,'rh_thdistal/1','rh_palm/0']
+     ['rh_ffdistal/2','rh_ffproximal/1','rh_mfdistal/2', 'rh_mfproximal/1', 'rh_rfdistal/2',  'rh_rfproximal/1','rh_lfdistal/2' ,'rh_lfproximal/1','rh_thdistal/1','rh_palm/7','rh_palm/5','rh_palm/4','rh_palm/2','rh_palm/0']
 
-  opt_progress: [0.0, 0.6, 0.8]
-  distance: [0.01, 0.01, 0.0]
+  opt_progress: [0.0, 0.3, 0.6]
+  distance: [0.02, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
 
   save_qpos: [False, True]
@@ -64,10 +64,12 @@ grasp_cfg:
     solver_type: 'batch_reluqp'
     k_lower: 0.2
     pressure_constraints:
-      [[[0, 1, 2, 3,4], 1.0],
-        [[0, 1, 2,3], 0.4], 
-        [[3], 0.5]
-      ]               
+      - [[0,1,2,3,4,5,6,7,8,9,10,11,12,13], 1.2]
+      - [[1,3,5,7], 0.6]
+      - [[0,2,4,6], 0.5]
+      - [[8], 0.3]
+      - [[9,10,11,12,13], 0.4]
+
 
     enable_density: False
     solve_interval: 5

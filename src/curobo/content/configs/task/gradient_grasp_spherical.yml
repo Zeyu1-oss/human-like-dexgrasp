@@ -59,7 +59,7 @@ cost:
     selected_joint_groups:
      - ['rh_FFJ1', 'rh_MFJ1', 'rh_RFJ1', 'rh_LFJ1']
 
-     - ['rh_FFJ2', 'rh_MFJ2', 'rh_RFJ2', 'rh_LFJ2']
+     - ['rh_FFJ2', 'rh_MFJ2', 'rh_RFJ2', 'rh_LFJ2','rh_THJ1']
      - ['rh_FFJ3', 'rh_MFJ3', 'rh_RFJ3', 'rh_LFJ3']
 
 

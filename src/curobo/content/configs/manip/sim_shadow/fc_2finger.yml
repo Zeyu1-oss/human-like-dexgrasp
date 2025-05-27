@@ -3,7 +3,7 @@ world:
   template_path: "object/DGN_obj/processed_data/{$OBJECT_CODE}/mesh/simplified.obj"
   additional_cfg_path: 
   selection:
-    id_lst_path: object/DGN_obj/valid_split/two_finger_objects.json
+    id_lst_path: object/DGN_obj/valid_split/bodex_all.json
     id:    
     start: 0
     end: 100

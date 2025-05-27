@@ -10,12 +10,12 @@ class JointBendingConfig(CostConfig):
       selected_joints:   List of joint indices or names to apply bending incentive
       target_angles:     Desired joint angles in radians
       joint_weights:     Optional per-joint weighting factors
-      k:                 Exponential rate: larger k → faster penalty saturation
+      k:                 Exponential rate: larger k → 更快达到饱和惩罚
     """
     selected_joints: List[Union[int, str]] = None
     target_angles:    List[float]           = None
     joint_weights:    Optional[List[float]] = None
-    k:                float                 = 5.0  # default decay rate
+    k:                float                 = 5.0  # 默认衰减速度
 
     def __post_init__(self):
         super().__post_init__()
@@ -24,40 +24,40 @@ class JointBendingConfig(CostConfig):
         device = self.tensor_args.device
         dtype  = self.tensor_args.dtype
 
-        # Convert target_angles to a tensor of shape [1,1,J]
+        # 转成 tensor，shape=[1,1,J]
         tgt = torch.tensor(self.target_angles, device=device, dtype=dtype)
         self.target_angles = tgt.view(1, 1, -1)
 
-        # Optionally convert joint_weights to tensor of shape [1,1,J]
+        # 可选的关节权重
         if self.joint_weights is not None:
             w = torch.tensor(self.joint_weights, device=device, dtype=dtype)
             self.joint_weights = w.view(1, 1, -1)
 
-        # Exponential decay coefficient k
+        # 指数衰减系数
         self.k = torch.tensor(self.k, device=device, dtype=dtype)
 
-        # Global weight (scalar)
+        # 全局权重
         if self.weight is None:
             self.weight = torch.tensor(1.0, device=device, dtype=dtype)
         else:
             self.weight = self.weight.to(device=device, dtype=dtype)
 
-        # Consistency checks
+        # 长度检查
         num_j = self.target_angles.numel()
         assert len(self.selected_joints) == num_j, (
-            f"selected_joints length ({len(self.selected_joints)}) must match "
-            f"number of target_angles ({num_j})"
+            f"selected_joints length ({len(self.selected_joints)}) must match"
+            f" number of target_angles ({num_j})"
         )
         if self.joint_weights is not None:
             assert self.joint_weights.numel() == num_j, (
-                f"joint_weights length ({self.joint_weights.numel()}) must match "
-                f"number of selected_joints ({len(self.selected_joints)})"
+                f"joint_weights length ({self.joint_weights.numel()}) must match"
+                f" number of selected_joints ({len(self.selected_joints)})"
             )
 
 
 class JointBending:
     """
-    Applies an exponential-decay penalty for under-bent joints:
+    用指数衰减的方式惩罚“未弯足够”的关节：
       penalty = weight * joint_weight * (1 - exp(-k * max(0, target - theta)))
     """
     def __init__(
@@ -73,7 +73,7 @@ class JointBending:
         self.selected_joints     = config.selected_joints
         self.joint_index_to_name = None
 
-        # If joints are given by name, map to indices
+        # 如果用名字索引，先映射
         if joint_name_to_index_fn and isinstance(self.selected_joints[0], str):
             mapped = []
             self.joint_index_to_name = {}
@@ -83,38 +83,32 @@ class JointBending:
                 self.joint_index_to_name[idx] = name
             self.selected_joints = mapped
 
-        # Cache the index tensor for fast selection
+        # 缓存 index tensor
         self.selected_idx = torch.as_tensor(
             self.selected_joints,
             dtype=torch.long,
             device=self.tensor_args.device
-        )  # shape [J]
+        )  # [J]
 
     def forward(self, joint_state: torch.Tensor, debug: bool = False) -> torch.Tensor:
         """
-        Compute bending cost.
-
-        Args:
-            joint_state: Tensor of shape [B, S, DOF]
-            debug: If True, print debug info.
-
-        Returns:
-            final_cost: Tensor of shape [B, S]
+        joint_state: [B, S, DOF]
+        返回 final_cost: [B, S]
         """
-        # Select the relevant joints: [B, S, J]
+        # 抽取我们关心的 J 个关节：[B, S, J]
         group = joint_state.index_select(dim=-1, index=self.selected_idx)
 
-        # Compute under-bend amount: max(0, target - angle)
-        diff = torch.nn.functional.relu(self.target_angles - group)  # [B, S, J]
+        # 1) 计算 under-bend 量：relu(target - θ)
+        diff = torch.nn.functional.relu(self.target_angles - group)  # [B,S,J]
 
-        # Exponential decay penalty: (1 - exp(-k * diff)) * joint_weight
+        # 2) 指数衰减惩罚：pen = (1 - exp(-k * diff)) * joint_weight
         w = self.joint_weights if self.joint_weights is not None else 1.0
-        exp_term = torch.exp(-self.k * diff)                         # [B, S, J]
-        pen = (1.0 - exp_term) * w                                    # [B, S, J]
+        exp_term = torch.exp(-self.k * diff)                          # [B,S,J]
+        pen = (1.0 - exp_term) * w                                    # [B,S,J]
 
-        # Sum over joints and apply global weight
-        cost = pen.sum(dim=-1)           # [B, S]
-        final_cost = cost * self.weight  # [B, S]
+        # 3) 求和并乘全局权重
+        cost = pen.sum(dim=-1)              # [B,S]
+        final_cost = cost * self.weight     # [B,S]
 
         if debug:
             sample = final_cost[0, :min(final_cost.size(1), 5)].tolist()
