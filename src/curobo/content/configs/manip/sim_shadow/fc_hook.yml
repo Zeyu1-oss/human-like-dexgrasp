@@ -45,7 +45,7 @@ grasp_contact_strategy:
   contact_points_name:
      ['rh_ffdistal/2','rh_ffproximal/1','rh_mfdistal/2', 'rh_mfproximal/1', 'rh_rfdistal/2',  'rh_rfproximal/1','rh_lfdistal/2' ,'rh_lfproximal/1','rh_thdistal/1','rh_palm/7','rh_palm/5','rh_palm/4','rh_palm/2','rh_palm/0']
 
-  opt_progress: [0.0, 0.3, 0.6]
+  opt_progress: [0.0, 0.6, 0.8]
   distance: [0.02, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
 

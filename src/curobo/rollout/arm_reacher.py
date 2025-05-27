@@ -393,14 +393,22 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                             c = current_fn.forward(current_pos, current_quat, self._goal_buffer, k)
                             cost_list.append(c)
         with profiler.record_function("cost/joint_bending"):
-            if (
-                self.joint_bending_cost is not None
-                and self.joint_bending_cost.weight is not None
-                and torch.any(self.joint_bending_cost.weight != 0)
-            ):
-                joint_state = state_batch.position  # [B, H, DOF]
-                bending_cost = self.joint_bending_cost.forward(joint_state)
+            jbc = self.joint_bending_cost
+            if jbc is not None and jbc.weight is not None and torch.any(jbc.weight != 0):
+                joint_state = state_batch.position
+                bending_cost = jbc.forward(joint_state, opt_progress, debug_flag)
+                prog = getattr(jbc, "opt_progress", None)
+                if prog is not None:
+                    prog_t = torch.as_tensor(
+                        prog, 
+                        device=bending_cost.device, 
+                        dtype=bending_cost.dtype
+                    ).unsqueeze(0)
+                    bending_cost = bending_cost * prog_t
+
                 cost_list.append(bending_cost)
+
+
                             
         with profiler.record_function("cost/joint_consistency"):
             if (
