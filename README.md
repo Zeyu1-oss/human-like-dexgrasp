@@ -35,7 +35,10 @@ Original BODex Resources:
   <br>
   <img src="https://github.com/user-attachments/assets/8c947e39-9d69-48dc-877b-d0ecf7833c78" width="400"/>
 ---
-
+- **cylindrical Grasp Examples**  
+  <br>
+  <img src="https://github.com/user-attachments/assets/55b06a4f-5331-451a-bc61-1e5d34c6bfba" width="400"/>
+---
 
 ## 1. Generate Lumbrical Grasp
 
@@ -67,5 +70,8 @@ CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_2
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_3finger.yml -w 20
 
 ```
+## 5. Cylindrical Grasp
+
+CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_hook.yml -w 20
 
 
