@@ -37,7 +37,7 @@ Original BODex Resources:
 ---
 - **cylindrical Grasp Examples**  
   <br>
-  <img src="https://github.com/user-attachments/assets/dd479319-038e-4e98-bfed-b4f2e7654861" width="400"/>
+  <img src="https://github.com/user-attachments/assets/749aa4ef-7471-4796-94f3-23beea50f81c" width="400"/>
 ---
 
 ## 1. Generate Lumbrical Grasp
