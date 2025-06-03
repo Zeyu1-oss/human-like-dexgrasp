@@ -150,7 +150,7 @@ class JointBending:
         # 5) Exponential decay penalty per joint
         joint_w = self.joint_weights if self.joint_weights is not None else 1.0
         exp_term = torch.exp(-self.k * diff)
-        penalty  = (1.0 - exp_term) * joint_w
+        penalty  = diff * joint_w
 
         # Sum over joints and apply global weight
         cost = penalty.sum(dim=-1)

@@ -392,7 +392,7 @@
       <child link="rh_thdistal"/>
       <origin xyz="0.0 0.0 0.032" rpy="0.0 0.0 -1.5707963267948963"/>
       <axis xyz="1.0 0.0 0.0"/>
-      <limit lower="-0.1" upper="0.1" effort="100" velocity="100"/>
+      <limit lower="-0.1" upper="0.5708"  effort="100" velocity="100"/>
    </joint>
    <material name="white">
       <color rgba="1 1 1 1"/>

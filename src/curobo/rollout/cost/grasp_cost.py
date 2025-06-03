@@ -210,6 +210,7 @@ class GraspCost(CostBase, GraspCostConfig):
                 robot_contact_points, self._contact_buffer, perturb, env_query_idx)
             raw_pos_robot_with_grad = None
             mesh_dist_with_grad = None
+            distance_to_obj = torch.zeros((b, h), device=robot_sphere_in.device)
         elif self.contact_query_mode == 0:#fine stage
             b, h, _, _ = robot_sphere_in.shape
             n_points = len(self.contact_mesh_idx)
@@ -236,6 +237,8 @@ class GraspCost(CostBase, GraspCostConfig):
             raw_pos_robot_with_grad = (rot @ self.raw_pos_robot_frame.unsqueeze(-1)).squeeze(-1) + query_info[..., :3]
             mesh_dist_with_grad = self.dist_sign * (raw_pos_robot_with_grad - self.raw_pos).norm(dim=-1)
             self.count += 1
+            distance_to_obj = mesh_dist_with_grad.abs().mean(dim=-1)  # Fine 阶段
+
         else:
             raise NotImplementedError
 
