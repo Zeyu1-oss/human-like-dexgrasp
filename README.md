@@ -34,7 +34,7 @@ Original BODex Resources:
 - **spherical Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/8c947e39-9d69-48dc-877b-d0ecf7833c78" width="400"/>
----
+
 - **cylindrical Grasp Examples**  
   <br>
   <img src="https://github.com/user-attachments/assets/749aa4ef-7471-4796-94f3-23beea50f81c" width="400"/>
