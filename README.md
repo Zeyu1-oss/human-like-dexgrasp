@@ -35,7 +35,7 @@ Original BODex Resources:
   <br>
   <img src="https://github.com/user-attachments/assets/0b107000-8a0f-42d3-83ec-b6cb8abec8c4" width="400"/>
 
-- **cylindrical Grasp Examples**  
+- **cylindrical Grasp Examples（demo)**  
   <br>
   <img src="https://github.com/user-attachments/assets/749aa4ef-7471-4796-94f3-23beea50f81c" width="400"/>
 ---
