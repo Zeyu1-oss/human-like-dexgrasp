@@ -2,8 +2,8 @@ from typing import List, Optional, Union, Callable, Dict
 from dataclasses import dataclass
 import torch
 import numpy as np
+from torch import nn
 from curobo.rollout.cost.cost_base import CostConfig
-import random
 
 @dataclass
 class JointBendingConfig(CostConfig):
@@ -65,18 +65,26 @@ class JointBendingConfig(CostConfig):
                 f"joint_weights ({self.joint_weights.numel()}) != number of angles ({num_j})"
             )
 
-class JointBending:
-
+class JointBending(nn.Module):
+    """
+    Joint bending cost with learnable per-seed scaling factors inferred at runtime.
+    """
     def __init__(
         self,
         config: JointBendingConfig,
+        mult_range: tuple = (0.8, 1.2),
         joint_name_to_index_fn: Optional[Callable[[str], int]] = None
     ):
+        super().__init__()
         self.cfg = config
         self.tensor_args   = config.tensor_args
         self.k             = config.k
         self.weight        = config.weight
         self.joint_weights = config.joint_weights
+
+        # Placeholder for per-seed parameters, to be initialized on first forward
+        # per-seed scaling parameters will be registered lazily in forward
+        self.m_min, self.m_max = mult_range
 
         # Map joint names to indices if provided
         self.selected_joints = config.selected_joints
@@ -96,67 +104,69 @@ class JointBending:
         progress: Union[float, torch.Tensor],
         debug: bool = False
     ) -> torch.Tensor:
-        """
-        Compute bending cost.
-
-        Args:
-          joint_state: Tensor of shape [B, S, DOF]
-          progress:    float or 0-dim tensor, optimization progress in [0,1]
-          debug:       if True, print debug info
-
-        Returns:
-          Tensor of shape [B, S]: bending cost per time step
-        """
-        # Ensure progress is a Python float for np.interp
+        # Ensure progress is Python float for interpolation
         if isinstance(progress, torch.Tensor):
             progress = float(progress.cpu().item())
 
         # 1) Select relevant joints [B, S, J]
         current = joint_state.index_select(dim=-1, index=self.selected_idx)
+        B, S, J = current.shape
 
-        # 2) Determine target angles at this progress
+        # 2) Lazy init of per-seed scaling parameters
+        if 'u' not in self._parameters:
+            # register a learnable parameter of shape [1, S, 1]
+            param = torch.zeros(1, S, 1, device=self.tensor_args.device, dtype=self.tensor_args.dtype)
+            self.register_parameter('u', nn.Parameter(param))
+        # fetch the parameter
+        u = self._parameters['u']
+
+        # Compute per-seed mults in [m_min, m_max]
+        sig = torch.sigmoid(self.u)        # [1, S, 1]
+        mults = self.m_min + (self.m_max - self.m_min) * sig  # [1, S, 1]
+        mults = mults.expand(B, S, 1)       # [B, S, 1]
+
+        # 3) Determine base target angles at this progress
         if self.cfg.target_schedule:
             angles = [
                 np.interp(progress, self.cfg.ts_prog, self.cfg.ts_ang[:, j])
-                for j in range(self.cfg.ts_ang.shape[1])
-            ]  # list of J floats
+                for j in range(J)
+            ]
             tgt = torch.tensor(
                 angles,
                 device=self.tensor_args.device,
                 dtype=self.tensor_args.dtype
-            ).view(1, 1, -1)
+            ).view(1, 1, J)
         else:
-            tgt = self.cfg._base_target
-        mult = random.uniform(0.5, 1.2)
-        tgt = tgt * mult
-        # 3) Under-bend difference
+            tgt = self.cfg._base_target  # [1,1,J]
+
+        # Broadcast target to [B,S,J] then apply per-seed scaling
+        tgt = tgt.expand(B, S, J) * mults  # [B,S,J]
+
+        # 4) Under-bend difference
         diff = torch.nn.functional.relu(tgt - current)
 
-        # 4) Determine global weight at this progress
+        # 5) Determine global weight at this progress
         if self.cfg.weight_schedule:
             w_val = np.interp(progress, self.cfg.ws_prog, self.cfg.ws_val)
             global_w = torch.tensor(
-                w_val,
-                device=self.tensor_args.device,
-                dtype=self.tensor_args.dtype
+                w_val, device=self.tensor_args.device, dtype=self.tensor_args.dtype
             )
         else:
             global_w = self.weight
 
-        # 5) Exponential decay penalty per joint
+        # 6) Exponential decay penalty per joint
         joint_w = self.joint_weights if self.joint_weights is not None else 1.0
-        exp_term = torch.exp(-self.k * diff)
-        penalty  = diff * joint_w
+        penalty  = diff * joint_w  # [B,S,J]
 
         # Sum over joints and apply global weight
-        cost = penalty.sum(dim=-1)
-        final_cost = cost * global_w * self.weight
-        debug= True
+        cost = penalty.sum(dim=-1)  # [B,S]
+        final_cost = cost * global_w * self.weight  # [B,S]
+
         if debug:
             print("=== JointBending Debug ===")
             print(f"progress={progress:.3f}, global_w={float(global_w):.3f}")
-            print("target angles:", tgt.flatten().tolist())
+            print("learned mults per seed:", mults[0,:,0].tolist())
             print("k:", float(self.k))
-            print("sample cost:", final_cost[0, :5].tolist())
+            print("sample cost[0]:", final_cost[0].tolist())
 
         return final_cost

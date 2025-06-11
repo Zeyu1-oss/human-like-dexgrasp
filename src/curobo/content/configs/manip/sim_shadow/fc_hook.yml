@@ -25,7 +25,7 @@ particle_file: "particle_grasp_debug.yml"
 gradient_file: "gradient_grasp_hook.yml"
 
 exp_name: 'debug'
-seed_num: 5
+seed_num: 20
 seeder_cfg:
   obj_sample:
     num: 128
