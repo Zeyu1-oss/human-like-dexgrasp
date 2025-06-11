@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import torch
 import numpy as np
 from curobo.rollout.cost.cost_base import CostConfig
+import random
 
 @dataclass
 class JointBendingConfig(CostConfig):
@@ -126,7 +127,8 @@ class JointBending:
             ).view(1, 1, -1)
         else:
             tgt = self.cfg._base_target
-
+        mult = random.uniform(0.5, 1.2)
+        tgt = tgt * mult
         # 3) Under-bend difference
         diff = torch.nn.functional.relu(tgt - current)
 
