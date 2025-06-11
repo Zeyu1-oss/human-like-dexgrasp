@@ -45,13 +45,35 @@ cost:
     classify: False
     activation_distance: 0.002
 
-  joint_bending_cfg:
-    weight: 5           # 
-    selected_joints:            # 
-      ['rh_FFJ4','rh_MFJ4','rh_RFJ4','rh_LFJ4','rh_LFJ5']
-    target_angles: [-0.4,0,-0.2,-0.1,0.3]
-    joint_weights:  [3, 3,3, 3,3]
   
+  joint_bending_cfg:
+    weight: 3
+    selected_joints:
+     ['rh_FFJ2','rh_MFJ2','rh_RFJ2','rh_LFJ2',
+     'rh_FFJ3','rh_MFJ3','rh_RFJ3','rh_LFJ3',
+     'rh_FFJ4','rh_MFJ4','rh_RFJ4','rh_LFJ4',
+     'rh_LFJ5']
+    k: 5.0
+    target_angles:
+      [
+       1.2, 1.2, 1.2, 1.2,    # J2
+       1.3, 1.3, 1.3, 1.3,    # J3
+       1.3, 1.3, 1.3, 1.3,
+       1.1]              # THJ4, THJ5
+    joint_weights:
+      [  2,2,2,2,   2,2,2,2, 2,2,2,2, 1]
+
+    weight_schedule:
+       progress: [0.0, 0.6, 0.8]    
+       weight:   [0.5, 0.3, 0.2]
+
+    target_schedule:
+        progress: [0.0, 0.6, 0.8]
+        angles:
+         - [   0.3, 0.3, 0.3, 0.3,   0.7, 0.7, 0.7, 0.7,  -0.3,0,0.3,-0.2 ,  0.3]
+         - [  0.4, 0.4, 0.4, 0.4,   0.7, 0.7, 0.7, 0.7,   -0.3,0,0.3,-0.2,   0.3]
+         - [    0.5, 0.5, 0.5, 0.5,   0.7, 0.7, 0.7, 0.7,   -0.3,0,0.3,-0.2, 0.3]
+
   joint_consistency_cfg:
     weight: 3000
     group_allowed_diff: [0.1,0.05,0.05]

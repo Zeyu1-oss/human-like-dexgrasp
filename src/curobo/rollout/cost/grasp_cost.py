@@ -199,7 +199,7 @@ class GraspCost(CostBase, GraspCostConfig):
     def forward(self, robot_sphere_in, link_pos_quat, env_query_idx, opt_progress):
         contact_distance, switch_stage_flag, ge_stage_flag, save_qpos_flag = self._get_contact_stage(opt_progress)
 
-        if self.contact_query_mode == -1:# Coarse Stage,球体来近似手指和物体
+        if self.contact_query_mode == -1:# 
             robot_contact_points = robot_sphere_in[..., self.contact_points_idx, :]
             b, h, n_points, _ = robot_contact_points.shape
             n_pert = self.perturb_template.shape[-2]
@@ -237,17 +237,14 @@ class GraspCost(CostBase, GraspCostConfig):
             raw_pos_robot_with_grad = (rot @ self.raw_pos_robot_frame.unsqueeze(-1)).squeeze(-1) + query_info[..., :3]
             mesh_dist_with_grad = self.dist_sign * (raw_pos_robot_with_grad - self.raw_pos).norm(dim=-1)
             self.count += 1
-            distance_to_obj = mesh_dist_with_grad.abs().mean(dim=-1)  # Fine 阶段
 
         else:
             raise NotImplementedError
 
         if not ge_stage_flag:#=true
-            # 粗阶段只优化距离（loss_wo_ge）
             E_angle, E_dist, E_regu, dist_error = self.loss_wo_ge(robot_contact_points, contact_distance, raw_pos_robot_with_grad, mesh_dist_with_grad, opt_progress)
             grasp_error = contact_frame = contact_force = None 
         else:
-            #细，return force
             E_angle, E_dist, E_regu, dist_error, grasp_error, contact_frame, contact_force = self.loss_w_ge(raw_pos, raw_dist, raw_normal, contact_distance, opt_progress)
 
         if switch_stage_flag and ge_stage_flag:

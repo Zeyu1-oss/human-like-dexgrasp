@@ -3,7 +3,7 @@ world:
   template_path: "object/DGN_obj/processed_data/{$OBJECT_CODE}/mesh/simplified.obj"
   additional_cfg_path: 
   selection:
-    id_lst_path: object/DGN_obj/valid_split/spherical.json
+    id_lst_path: object/DGN_obj/valid_split/bodex_all.json
     id:    
     start: 0
     end: 50
@@ -24,7 +24,7 @@ particle_file: "particle_grasp_debug.yml"
 gradient_file: "gradient_grasp_spherical.yml"
 
 exp_name: 'debug'
-seed_num: 20
+seed_num: 10
 seeder_cfg:
   obj_sample:
     num: 128

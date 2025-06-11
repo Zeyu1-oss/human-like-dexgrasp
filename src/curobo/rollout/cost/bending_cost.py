@@ -65,13 +65,7 @@ class JointBendingConfig(CostConfig):
             )
 
 class JointBending:
-    """
-    Applies an exponential-decay penalty for under-bent joints:
 
-      penalty = (1 - exp(-k * max(0, target - current_angle))) * joint_weight * global_weight
-
-    Allows schedules for both target angles and global weight.
-    """
     def __init__(
         self,
         config: JointBendingConfig,
@@ -154,8 +148,8 @@ class JointBending:
 
         # Sum over joints and apply global weight
         cost = penalty.sum(dim=-1)
-        final_cost = cost * global_w
-
+        final_cost = cost * global_w * self.weight
+        debug= True
         if debug:
             print("=== JointBending Debug ===")
             print(f"progress={progress:.3f}, global_w={float(global_w):.3f}")
