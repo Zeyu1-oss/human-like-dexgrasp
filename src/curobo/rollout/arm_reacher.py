@@ -209,14 +209,23 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                 self.cost_cfg.link_pose_cfg = self.cost_cfg.pose_cfg
         self._link_pose_costs = {}
 
+        # Joint Consistency Cost Setup
         if (
             hasattr(self.cost_cfg, "joint_consistency_cfg")
             and self.cost_cfg.joint_consistency_cfg is not None
         ):
             joint_cfg = self.cost_cfg.joint_consistency_cfg
 
-            if isinstance(joint_cfg.selected_joint_groups[0][0], str):
-                joint_names = [
+            # Map robot names to their joint name lists
+            per_robot_joint_names = {
+                "allegro": [
+                    'tx','ty','tz','qx','qy','qz','qw',
+                    'joint_0.0', 'joint_1.0', 'joint_2.0', 'joint_3.0', #1
+                    'joint_4.0', 'joint_5.0', 'joint_6.0', 'joint_7.0', #2
+                    'joint_8.0', 'joint_9.0', 'joint_10.0', 'joint_11.0', #3
+                    'joint_12.0', 'joint_13.0', 'joint_14.0', 'joint_15.0' #th
+                ],
+                "shadow": [
                     'tx','ty','tz','qx','qy','qz','qw',
                     'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
                     'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
@@ -224,8 +233,17 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                     'rh_RFJ4', 'rh_RFJ3', 'rh_RFJ2', 'rh_RFJ1',
                     'rh_LFJ5', 'rh_LFJ4', 'rh_LFJ3', 'rh_LFJ2', 'rh_LFJ1'
                 ]
-                joint_name_to_index = {name: i for i, name in enumerate(joint_names)}
+            }
 
+            # Determine current robot
+            robot_name = getattr(config, 'hand_name', None)
+            joint_names = per_robot_joint_names.get(robot_name)
+            if joint_names is None:
+                raise ValueError(f"No joint name list defined for robot '{robot_name}'")
+
+            # Convert named groups to index groups
+            if isinstance(joint_cfg.selected_joint_groups[0][0], str):
+                joint_name_to_index = {name: i for i, name in enumerate(joint_names)}
                 try:
                     joint_cfg.selected_joint_groups = [
                         [joint_name_to_index[name] for name in group]
@@ -233,41 +251,37 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                     ]
                 except KeyError as e:
                     raise ValueError(
-                        f"joints name '{e.args[0]}' not in list joint_names \n"
-                        f"allowed joints: {joint_names}"
+                        f"Joint name '{e.args[0]}' not valid for robot {robot_name}; allowed: {joint_names}"
                     )
 
             self.joint_consistency_cost = JointConsistency(joint_cfg)
         else:
             self.joint_consistency_cost = None
 
+        # Joint Bending Cost Setup
         if (
             hasattr(self.cost_cfg, "joint_bending_cfg")
             and self.cost_cfg.joint_bending_cfg is not None
         ):
             bending_cfg = self.cost_cfg.joint_bending_cfg
 
-            if isinstance(bending_cfg.selected_joints[0], str):
-                # 
-                joint_names = [
-                    'tx','ty','tz','qx','qy','qz','qw',
-                    'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
-                    'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
-                    'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
-                    'rh_RFJ4', 'rh_RFJ3', 'rh_RFJ2', 'rh_RFJ1',
-                    'rh_LFJ5', 'rh_LFJ4', 'rh_LFJ3', 'rh_LFJ2', 'rh_LFJ1'
-                ]
-                name_to_idx = {name: i for i, name in enumerate(joint_names)}
+            # Reuse per-robot mapping defined above
+            robot_name = getattr(config, 'hand_name', None)
+            joint_names = per_robot_joint_names.get(robot_name)
+            if joint_names is None:
+                raise ValueError(f"No joint name list defined for robot '{robot_name}'")
 
+            if isinstance(bending_cfg.selected_joints[0], str):
+                name_to_idx = {name: i for i, name in enumerate(joint_names)}
                 try:
                     bending_cfg.selected_joints = [
                         name_to_idx[name] for name in bending_cfg.selected_joints
                     ]
                 except KeyError as e:
                     raise ValueError(
-                        f"joints name '{e.args[0]}' not in list joint_names \n"
-                        f"allowed joints: {joint_names}"
+                        f"Joint name '{e.args[0]}' not valid for robot {robot_name}; allowed: {joint_names}"
                     )
+
             self.joint_bending_cost = JointBending(bending_cfg)
         else:
             self.joint_bending_cost = None

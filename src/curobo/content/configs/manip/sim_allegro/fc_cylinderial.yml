@@ -20,7 +20,7 @@ robot_file: "allegro.yml"
 robot_file_with_arm: 
 base_cfg_file: "base_grasp.yml"
 particle_file: "particle_grasp_debug.yml"
-gradient_file: "gradient_grasp_fc.yml"
+gradient_file: "gradient_grasp_allegrocylinderial.yml"
 
 exp_name: 'debug'
 seed_num: 20
@@ -38,9 +38,10 @@ seeder_cfg:
   q: [0., 0.6, 0., 0., 0., 0.6, 0., 0., 0., 0.6, 0., 0., 1.2, 0., 0., 0.,]
   jitter_angle: [[-180, -15, -15], [180, 15, 15]]
   jitter_dist: [[0.0, -0.03, -0.03], [0.03, 0.03, 0.03]]
-
+  
 grasp_contact_strategy:
-  contact_points_name: ['link_3.0_tip/0', 'link_7.0_tip/0', 'link_11.0_tip/0', 'link_15.0_tip/0']
+  contact_points_name: ['link_1.0/0','link_3.0_tip/0', 'link_5.0/0','link_7.0_tip/0','link_9.0/0', 'link_11.0_tip/0','link_13.0/0', 'link_15.0_tip/0', 'base_link/0',
+     'base_link/3','base_link/6']
   opt_progress: [0.0, 0.6, 0.8]
   distance: [0.01, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
@@ -58,10 +59,11 @@ grasp_cfg:
     miu_coef: [0.1, 0]
     solver_type: 'batch_reluqp'
     k_lower: 0.2
-    pressure_constraints:   # [contact_id_list, lower]
-      [[[0, 1, 2, 3], 1.0],
-        [[0, 1], 0.4], 
-        [[3], 0.5], 
+    pressure_constraints:
+      [[[0,1,2,3,4,5,6,7,8,9,10], 1.0],
+        [[1,3, 5, 7], 0.8],
+        [[6,7],0.2],
+        [[8,9,10], 0.4]
       ]
     enable_density: False
     solve_interval: 5

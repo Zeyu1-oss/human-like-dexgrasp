@@ -26,7 +26,7 @@ def load_and_print_npy(file_path):
         print(f"First few elements: {data[:3]}")
 def main():
     # 
-    file_path = '/home/rose/DexGraspBench/output/debug_shadow/succgrasp/core_bowl_4967063fc3673caa47fe6b02985fbd0/scale012_pose000/0.npy' \
+    file_path = '/home/rose/BODex/src/curobo/content/assets/output/sim_shadow/fc_for/debug/graspdata/core_bottle_5d6001f9e6a15de3e3edb5ba52088f8c/scale006_pose000_grasp.npy' \
     ''  # 替换为你文件的实际路径
     load_and_print_npy(file_path)
 

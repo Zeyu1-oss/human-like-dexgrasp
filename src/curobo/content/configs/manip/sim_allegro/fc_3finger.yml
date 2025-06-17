@@ -40,7 +40,7 @@ seeder_cfg:
   jitter_dist: [[0.0, -0.03, -0.03], [0.03, 0.03, 0.03]]
 
 grasp_contact_strategy:
-  contact_points_name: ['link_3.0_tip/0', 'link_7.0_tip/0', 'link_11.0_tip/0', 'link_15.0_tip/0']
+  contact_points_name: ['link_3.0_tip/0', 'link_7.0_tip/0', 'link_15.0_tip/0']
   opt_progress: [0.0, 0.6, 0.8]
   distance: [0.01, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
@@ -59,9 +59,8 @@ grasp_cfg:
     solver_type: 'batch_reluqp'
     k_lower: 0.2
     pressure_constraints:   # [contact_id_list, lower]
-      [[[0, 1, 2, 3], 1.0],
-        [[0, 1], 0.4], 
-        [[3], 0.5], 
+      [[[0, 1, 2], 1.0],
+        [[0, 1], 0.4]
       ]
     enable_density: False
     solve_interval: 5

@@ -28,7 +28,7 @@ robot_cfg:
     usd_flip_joint_limits: []
  
  
-    urdf_path: "robot/shadow_hand/right_sim_hook.urdf"
+    urdf_path: "robot/shadow_hand/right_sim.urdf"
     asset_root_path: "robot/shadow_hand"
     # urdf_path: "robot/sr_grasp_description/urdf/shadowhand_wrist_free.urdf"
     # asset_root_path: "robot/sr_grasp_description"
