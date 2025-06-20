@@ -6,7 +6,7 @@ world:
     id_lst_path: object/DGN_obj/valid_split/bodex_all.json
     id:    
     start: 0
-    end: 20
+    end: 2397
     repeat: 4
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json
@@ -40,13 +40,13 @@ seeder_cfg:
   jitter_dist: [[0.0, -0.03, -0.03], [0.03, 0.03, 0.03]]
 
 grasp_contact_strategy:
-  contact_points_name: ['link_3.0_tip/0', 'link_15.0_tip/0']
+  contact_points_name: ['link_3.0_tip/0', 'link_15.0_tip/0'] # ff and th
   opt_progress: [0.0, 0.6, 0.8]
   distance: [0.01, 0.01, 0.0]
   contact_query_mode: [-1, 0, 0]
   save_qpos: [False, True]
   max_ge_stage: 0
-
+`
 grasp_cfg:
   task_dict:
     f: [0, 0, 1]

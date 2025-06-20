@@ -8,7 +8,7 @@
 ## without an express license agreement from NVIDIA CORPORATION or
 ## its affiliates is strictly prohibited.
 ##
-robot: 'Franka Panda'
+robot: 'hithand'
 urdf_path: "urdf/franka_description/franka_panda_dyn.urdf"
 collision_spheres:
     panda_link0:

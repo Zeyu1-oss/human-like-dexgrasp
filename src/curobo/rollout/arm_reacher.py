@@ -149,6 +149,7 @@ class ArmReacherConfig(ArmBaseConfig):
     cost_cfg: ArmReacherCostConfig
     constraint_cfg: ArmReacherCostConfig
     convergence_cfg: ArmReacherCostConfig
+    hand_name: Optional[str]=None
 
     @staticmethod
     def cost_from_dict(
@@ -191,7 +192,23 @@ class ArmReacher(ArmBase, ArmReacherConfig):
         # self.goal_ee_quat = None
         self._compute_g_dist = False
         self._n_goalset = 1
-
+        templates = {
+                "allegro": [
+                    'tx','ty','tz','qx','qy','qz','qw',
+                    'joint_0.0','joint_1.0','joint_2.0','joint_3.0',
+                    'joint_4.0','joint_5.0','joint_6.0','joint_7.0',
+                    'joint_8.0','joint_9.0','joint_10.0','joint_11.0',
+                    'joint_12.0','joint_13.0','joint_14.0','joint_15.0'
+                ],
+                "shadow": [
+                    'tx','ty','tz','qx','qy','qz','qw',
+                    'rh_THJ5','rh_THJ4','rh_THJ3','rh_THJ2','rh_THJ1',
+                    'rh_FFJ4','rh_FFJ3','rh_FFJ2','rh_FFJ1',
+                    'rh_MFJ4','rh_MFJ3','rh_MFJ2','rh_MFJ1',
+                    'rh_RFJ4','rh_RFJ3','rh_RFJ2','rh_RFJ1',
+                    'rh_LFJ5','rh_LFJ4','rh_LFJ3','rh_LFJ2','rh_LFJ1'
+                ]
+            }
         if self.cost_cfg.grasp_cfg is not None:            
             self.grasp_cost = GraspCost(self.cost_cfg.grasp_cfg)
             
@@ -209,82 +226,60 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                 self.cost_cfg.link_pose_cfg = self.cost_cfg.pose_cfg
         self._link_pose_costs = {}
 
-        # Joint Consistency Cost Setup
+         # Joint Consistency Cost Setup
         if (
             hasattr(self.cost_cfg, "joint_consistency_cfg")
             and self.cost_cfg.joint_consistency_cfg is not None
         ):
             joint_cfg = self.cost_cfg.joint_consistency_cfg
 
-            # Map robot names to their joint name lists
-            per_robot_joint_names = {
-                "allegro": [
-                    'tx','ty','tz','qx','qy','qz','qw',
-                    'joint_0.0', 'joint_1.0', 'joint_2.0', 'joint_3.0', #1
-                    'joint_4.0', 'joint_5.0', 'joint_6.0', 'joint_7.0', #2
-                    'joint_8.0', 'joint_9.0', 'joint_10.0', 'joint_11.0', #3
-                    'joint_12.0', 'joint_13.0', 'joint_14.0', 'joint_15.0' #th
-                ],
-                "shadow": [
-                    'tx','ty','tz','qx','qy','qz','qw',
-                    'rh_THJ5', 'rh_THJ4', 'rh_THJ3', 'rh_THJ2', 'rh_THJ1',
-                    'rh_FFJ4', 'rh_FFJ3', 'rh_FFJ2', 'rh_FFJ1',
-                    'rh_MFJ4', 'rh_MFJ3', 'rh_MFJ2', 'rh_MFJ1',
-                    'rh_RFJ4', 'rh_RFJ3', 'rh_RFJ2', 'rh_RFJ1',
-                    'rh_LFJ5', 'rh_LFJ4', 'rh_LFJ3', 'rh_LFJ2', 'rh_LFJ1'
-                ]
-            }
+            # 按 hand_name 选择关节模板
 
-            # Determine current robot
-            robot_name = getattr(config, 'hand_name', None)
-            joint_names = per_robot_joint_names.get(robot_name)
-            if joint_names is None:
-                raise ValueError(f"No joint name list defined for robot '{robot_name}'")
+            robot = joint_cfg.hand_name
+            if robot not in templates:
+                raise ValueError(f"Unknown hand_name '{robot}' for consistency cost")
+            joint_names = templates[robot]
 
-            # Convert named groups to index groups
             if isinstance(joint_cfg.selected_joint_groups[0][0], str):
-                joint_name_to_index = {name: i for i, name in enumerate(joint_names)}
+                idx_map = {n: i for i, n in enumerate(joint_names)}
                 try:
                     joint_cfg.selected_joint_groups = [
-                        [joint_name_to_index[name] for name in group]
-                        for group in joint_cfg.selected_joint_groups
+                        [idx_map[n] for n in grp]
+                        for grp in joint_cfg.selected_joint_groups
                     ]
                 except KeyError as e:
-                    raise ValueError(
-                        f"Joint name '{e.args[0]}' not valid for robot {robot_name}; allowed: {joint_names}"
-                    )
+                    raise ValueError(f"Invalid joint '{e.args[0]}' in consistency config; allowed: {joint_names}")
 
             self.joint_consistency_cost = JointConsistency(joint_cfg)
         else:
             self.joint_consistency_cost = None
 
-        # Joint Bending Cost Setup
-        if (
-            hasattr(self.cost_cfg, "joint_bending_cfg")
-            and self.cost_cfg.joint_bending_cfg is not None
-        ):
+        if self.cost_cfg.joint_bending_cfg is not None:
             bending_cfg = self.cost_cfg.joint_bending_cfg
 
-            # Reuse per-robot mapping defined above
-            robot_name = getattr(config, 'hand_name', None)
-            joint_names = per_robot_joint_names.get(robot_name)
-            if joint_names is None:
-                raise ValueError(f"No joint name list defined for robot '{robot_name}'")
+            robot = bending_cfg.hand_name
+            if robot not in templates:
+                raise ValueError(f"Unknown hand_name '{robot}' for bending cost")
+            joint_names = templates[robot]
 
             if isinstance(bending_cfg.selected_joints[0], str):
-                name_to_idx = {name: i for i, name in enumerate(joint_names)}
+                idx_map = {n: i for i, n in enumerate(joint_names)}
                 try:
                     bending_cfg.selected_joints = [
-                        name_to_idx[name] for name in bending_cfg.selected_joints
+                        idx_map[n] for n in bending_cfg.selected_joints
                     ]
                 except KeyError as e:
                     raise ValueError(
-                        f"Joint name '{e.args[0]}' not valid for robot {robot_name}; allowed: {joint_names}"
+                        f"Invalid joint '{e.args[0]}' in bending config; allowed: {joint_names}"
                     )
 
-            self.joint_bending_cost = JointBending(bending_cfg)
+            self.joint_bending_cost = JointBending(
+                bending_cfg,
+                joint_name_to_index_fn=lambda name: joint_names.index(name)
+            )
         else:
             self.joint_bending_cost = None
+
 
             
         if self.cost_cfg.link_pose_cfg is not None:
@@ -435,7 +430,8 @@ class ArmReacher(ArmBase, ArmReacherConfig):
                 if debug_flag:
                     print("🔍 [DEBUG] Verifying joint_state index mapping:")
 
-                    for i in range(min(joint_state.shape[-1], 22)):
+                    max_n = min(joint_state.shape[-1], len(self.state_bounds.joint_names))
+                    for i in range(max_n):
                         joint_name = self.state_bounds.joint_names[i]
                         joint_value = joint_state[0, 0, i].item()
                         print(f"  Index {i:2d}: Joint '{joint_name}' -> Value: {joint_value:.6f}")

@@ -25,9 +25,10 @@ model:
   control_space: 'POSITION'
   teleport_mode: True
 
+
 cost:
   grasp_cfg:
-    weight: [100,10000, 10]      # grasp loss, dist loss, regu loss
+    weight: [100,1000, 10]      # grasp loss, dist loss, regu loss
     perturb_strength_bound: [0.01, 0.02]
   cspace_cfg:
     weight: 0.0
@@ -44,44 +45,51 @@ cost:
     weight: 100.0
     classify: False
     activation_distance: 0.002
-    
+
   joint_bending_cfg:
-    hand_name: "shadow"
-    weight: 1
+    hand_name: "allegro"   
+    weight: 5
     selected_joints:
      [
-     'rh_FFJ2','rh_MFJ2','rh_RFJ2','rh_LFJ2',
-     'rh_FFJ3','rh_MFJ3','rh_RFJ3','rh_LFJ3','rh_FFJ4','rh_MFJ4','rh_RFJ4','rh_LFJ4'
+   
+       'joint_0.0', 'joint_4.0', 'joint_8.0',  #2
+        'joint_1.0', 'joint_5.0', 'joint_9.0',
+        'joint_2.0', 'joint_6.0', 'joint_10.0',  #3
+        'joint_3.0', 'joint_7.0', 'joint_11.0', 
+        'joint_12.0','joint_13.0'
      ]
     target_angles:
-      [
-       1.2, 1.2, 1.2, 1.2,    # J2
-       1.3, 1.3, 1.3, 1.3,    # J3
-       0,0,0,0]              # j4
+      [1,1,1,
+       0.5, 0.5, 0.5,
+       0.5, 0.5, 0.5,    # J2
+       0.6, 0.6, 0.6,     # J3
+       1,1
+       ]              # j4
     joint_weights:
-      [ 2,2,2,2,   2,2,2,2,5,5,5,5]
+      [ 2,2,2, 2,2,2,  2,2,2,  2,2,2,10,10]
 
     weight_schedule:
-       progress: [0.0, 0.9]    
-       weight:   [1, 0.5]
+       progress: [0, 1]    
+       weight:   [2, 1]
 
     target_schedule:
-        progress: [0.0, 0.9]
+        progress: [0, 1]
         angles:
-         - [ 0.5, 0.5, 0.5, 0.5,   0.6, 0.6, 0.6, 0.6,0,0,0,0]
-         - [  0.7, 0.7, 0.7, 0.7,   0.8, 0.81, 0.8, 0.8,0,0,0,0]
-    mult_range: [0.1, 1.9]
+         - [  0,0, 0,1.04,1.04,1.04, 0,0,0,  0, 0,0 ,1,1]
+         - [  0,0, 0,1.04,1.04,1.04, 0,0,0,  0, 0,0, 1,1]
+    mult_range: [1, 1.2]
 
   joint_consistency_cfg:
-    hand_name: "shadow"
-
-    weight: 1000
-    group_allowed_diff: [ 0.01, 0.01,0.01]
-    group_weight: [1, 1, 1, 1]
+    hand_name: "allegro"   
+    weight: 3000
+    group_allowed_diff: [0.01,0.01]
+    group_weight: [1,1]
     selected_joint_groups:
-      - ['rh_FFJ2', 'rh_MFJ2', 'rh_RFJ2', 'rh_LFJ2']
-      - ['rh_FFJ3', 'rh_MFJ3', 'rh_RFJ3', 'rh_LFJ3']
-      - ['rh_FFJ4', 'rh_MFJ4', 'rh_RFJ4', 'rh_LFJ4']
+    
+     - ['joint_0.0', 'joint_4.0', 'joint_8.0']
+     - ['joint_1.0', 'joint_5.0', 'joint_9.0']
+
+
 
 
 
