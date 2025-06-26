@@ -1,0 +1,98 @@
+collision_spheres:
+  base_link_hithand:
+    - center: [0.0, 0.0, 0.02]
+      radius: 0.03
+    - center: [0.02, 0.0, 0.04]
+      radius: 0.03
+    - center: [-0.02, 0.0, 0.04]
+      radius: 0.03
+
+  Right_Thumb_Basecover:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.015
+
+  Right_Thumb_Phaprox:
+    - center: [0.025, 0.0, 0.0]
+      radius: 0.012
+    - center: [0.045, 0.0, 0.0]
+      radius: 0.012
+
+  Right_Thumb_Phamed:
+    - center: [0.015, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Thumb_Phadist:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Index_Basecover:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.015
+
+  Right_Index_Phaprox:
+    - center: [0.025, 0.0, 0.0]
+      radius: 0.012
+    - center: [0.045, 0.0, 0.0]
+      radius: 0.012
+
+  Right_Index_Phamed:
+    - center: [0.015, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Index_Phadist:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Middle_Basecover:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.015
+
+  Right_Middle_Phaprox:
+    - center: [0.025, 0.0, 0.0]
+      radius: 0.012
+    - center: [0.045, 0.0, 0.0]
+      radius: 0.012
+
+  Right_Middle_Phamed:
+    - center: [0.015, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Middle_Phadist:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Ring_Basecover:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.015
+
+  Right_Ring_Phaprox:
+    - center: [0.025, 0.0, 0.0]
+      radius: 0.012
+    - center: [0.045, 0.0, 0.0]
+      radius: 0.012
+
+  Right_Ring_Phamed:
+    - center: [0.015, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Ring_Phadist:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Little_Basecover:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.015
+
+  Right_Little_Phaprox:
+    - center: [0.025, 0.0, 0.0]
+      radius: 0.012
+    - center: [0.045, 0.0, 0.0]
+      radius: 0.012
+
+  Right_Little_Phamed:
+    - center: [0.015, 0.0, 0.0]
+      radius: 0.01
+
+  Right_Little_Phadist:
+    - center: [0.01, 0.0, 0.0]
+      radius: 0.01

@@ -3,10 +3,10 @@ world:
   template_path: "object/DGN_obj/processed_data/{$OBJECT_CODE}/mesh/simplified.obj"
   additional_cfg_path: 
   selection:
-    id_lst_path: object/DGN_obj/valid_split/hook.json
+    id_lst_path: object/DGN_obj/valid_split/bodex_all.json
     id:    
     start: 0
-    end: 20
+    end: 2397
     repeat: 4
     shuffle: True 
   base_info_path: object/DGN_obj/processed_data/{$OBJECT_CODE}/info/simplified.json

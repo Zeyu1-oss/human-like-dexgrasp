@@ -67,7 +67,7 @@ cost:
 
     weight_schedule:
        progress: [0.0, 1]    
-       weight:   [1, 0.5]
+       weight:   [2, 0.5]
 
     target_schedule:
         progress: [0.0, 1]
