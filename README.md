@@ -55,7 +55,7 @@ To verify the validity of the synthesized grasp styles, I randomly sampled **200
 
 >  *Power, Pinch, and Tripod* examples consistently matched their intended grasp type.  
 > ⚠ *Lumbrical and Cylindrical* examples showed more variability but still reflected expected patterns in the majority of cases.
-
+It is important to note that lumbrical and cylindrical grasp synthesis was conducted across the entire object dataset, without pre-filtering objects by shape or suitability. As a result, some objects were inherently unsuitable for these grasp strategies. Although our pipeline incorporates basic filters to exclude clearly incompatible candidates, certain ambiguous cases may still pass through. In such instances, the optimizer may converge to spherical or power-like grasp patterns, which deviates from the intended strategy. This explains the relatively lower match rate (~70%) for lumbrical and cylindrical styles, despite the majority still exhibiting expected human-like characteristics.
 ---
 
 ##  Grasp Examples
