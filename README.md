@@ -4,17 +4,17 @@ This repository contains my semester project at the Technical University of Muni
 
 - Two-finger pinch  
 - Three-finger tripod  
-- Five-finger power (hook)  
+- random power 
 - Lumbrical grasp  
 - Cylindrical grasp  
 
 across **three different robotic hand designs**.
 
-## 🔬 Project Focus
+##  Project Focus
 
 This project is under active development, with an emphasis on learning, prototyping, and validating **task-oriented grasp synthesis** methods inspired by human grasping behaviors.
 
-## ⚙️ Energy Extensions
+## ⚙ Energy Extensions
 
 To better replicate human grasp characteristics, I introduced two customized energy components into the optimization process:
 
@@ -28,7 +28,7 @@ These components guide optimization toward structured, stable, and human-like gr
 
 ---
 
-## 📦 Large-Scale Grasp Dataset
+##  Large-Scale Grasp Dataset
 
 Using the extended pipeline, I generated a total of **1.5 million grasps**:
 
@@ -39,7 +39,7 @@ All data was generated using GPU-accelerated optimization with joint-level energ
 
 ---
 
-## 📊 Visual Grasp Evaluation
+##  Visual Grasp Evaluation
 
 To verify the validity of the synthesized grasp styles, I randomly sampled **200 grasps per strategy** (from the full dataset) for visual inspection. Each sample was manually assessed to determine whether it matched the **expected human grasp pattern**.
 
@@ -47,18 +47,18 @@ To verify the validity of the synthesized grasp styles, I randomly sampled **200
 
 | Grasp Type        | # Visualized Samples | Match to Expected Strategy          |
 |-------------------|----------------------|-------------------------------------|
-| Power Grasp       | 200                  | ✅ **~100%** (fully match)           |
-| Pinch Grasp       | 200                  | ✅ **~100%** (fully match)           |
-| Tripod Grasp      | 200                  | ✅ **~100%** (fully match)           |
-| Lumbrical Grasp   | 200                  | ✅ **≥ 70%** (partially match)       |
-| Cylindrical Grasp | 200                  | ✅ **≥ 70%** (partially match)       |
+| Power Grasp       | 200                  |  **~100%** (fully match)           |
+| Pinch Grasp       | 200                  |  **~100%** (fully match)           |
+| Tripod Grasp      | 200                  |  **~100%** (fully match)           |
+| Lumbrical Grasp   | 200                  |  **≥ 70%** (partially match)       |
+| Cylindrical Grasp | 200                  |  **≥ 70%** (partially match)       |
 
-> ✅ *Power, Pinch, and Tripod* examples consistently matched their intended grasp type.  
-> ⚠️ *Lumbrical and Cylindrical* examples showed more variability but still reflected expected patterns in the majority of cases.
+>  *Power, Pinch, and Tripod* examples consistently matched their intended grasp type.  
+> ⚠ *Lumbrical and Cylindrical* examples showed more variability but still reflected expected patterns in the majority of cases.
 
 ---
 
-## 🖼️ Grasp Examples
+##  Grasp Examples
 
 - **Lumbrical Grasp**  
   <img src="https://github.com/user-attachments/assets/051551ca-5cf1-427d-9445-fe148e50008b" width="400"/>
@@ -74,7 +74,7 @@ To verify the validity of the synthesized grasp styles, I randomly sampled **200
 
 ---
 
-## 🛠️ Run Grasp Generation
+##  Run Grasp Generation
 
 ```bash
 # 1. Generate Lumbrical Grasp
