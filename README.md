@@ -22,10 +22,7 @@ This benchmark version has been adapted for human-like grasp analysis with the f
 - Integrated with my own synthesized grasps from the [`main`](https://github.com/Zeyu1-oss/human-like-dexgrasp/tree/main) branch
 - Streamlined `task=mergeobj` usage to select and render 200 samples per grasp type for visual validation
 - **Revised success criteria**: added a new condition requiring **sufficient number of contacting hand links** to count a grasp as successful (reflecting structured, human-like contact)
-- Minor configuration changes to reflect my synthesis environment:
-  - Increased object mass (e.g., from 30g to 100g)
-  - Adjusted controller stiffness (e.g., `kp = 5`)
-  - Adjusted friction coefficients and tolerance thresholds
+
 - Removed unused baseline modules for simplicity
 
 > Core metric implementations (AUC, FC analysis, contact stats) remain identical to the original DexGraspBench.
@@ -37,4 +34,4 @@ This benchmark version has been adapted for human-like grasp analysis with the f
 You can merge and visualize subsets of your synthesized grasps (e.g., 200 lumbrical grasps) using this command:
 
 ```bash
-python src/main.py task=mergeobj --config config/merge_lumbrical.yml
+python src/main.py task=mergeobj
