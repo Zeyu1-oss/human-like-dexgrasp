@@ -12,7 +12,7 @@ The benchmark enables large-scale analysis and visualization of open-loop grasp 
 
 ## Modifications from Original DexGraspBench
 
-This branch builds upon the official DexGraspBench implementation:  
+This branch builds upon the DexGraspBench implementation:  
 https://github.com/JYChen18/DexGraspBench
 
 It introduces the following structural and functional changes:
