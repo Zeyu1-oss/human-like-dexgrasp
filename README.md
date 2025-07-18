@@ -4,13 +4,15 @@ This repository contains my semester project at the Technical University of Muni
 
 - Two-finger pinch  
 - Three-finger tripod  
-- Five-finger hook  
+- Five-finger power (hook)  
 - Lumbrical grasp  
 - Cylindrical grasp  
 
+across **three different robotic hand designs**.
+
 ## 🔬 Project Focus
 
-This project is under active development, with an emphasis on learning, prototyping, and validating **task-oriented grasp synthesis** methods inspired by human hand behavior.
+This project is under active development, with an emphasis on learning, prototyping, and validating **task-oriented grasp synthesis** methods inspired by human grasping behaviors.
 
 ## ⚙️ Energy Extensions
 
@@ -24,28 +26,35 @@ To better replicate human grasp characteristics, I introduced two customized ene
 
 These components guide optimization toward structured, stable, and human-like grasp poses that maintain **force closure**.
 
-## 🎯 Final Goal
+---
 
-The final goal is to generate a large-scale, high-quality grasp dataset based on various human-like grasp types to support future research in **data-driven robotic grasping**.
+## 📦 Large-Scale Grasp Dataset
+
+Using the extended pipeline, I generated a total of **1.5 million grasps**:
+
+> 🔹 3 robotic hands × 5 grasp types × ~100,000 grasps per configuration  
+> = **1,500,000 grasp samples**
+
+All data was generated using GPU-accelerated optimization with joint-level energy terms and constraint configurations tailored to each grasp strategy and hand structure.
 
 ---
 
-## 📊 Grasp Dataset Summary
+## 📊 Visual Grasp Evaluation
 
-For each grasp type, I generated **200 grasp samples**, visualized and stored using `plan_batch_env.py`. The grasp outcomes are organized and accessible via the following link:
+To verify the validity of the synthesized grasp styles, I randomly sampled **200 grasps per strategy** (from the full dataset) for visual inspection. Each sample was manually assessed to determine whether it matched the **expected human grasp pattern**.
 
-🔗 **[Grasp Dataset Visualization (Google Drive)](https://drive.google.com/drive/folders/1NrTXjJ25SCxDgjDlmIk2513UGFA6zsBh?usp=drive_link)**
+🔗 **[Grasp Visualization Samples (Google Drive)](https://drive.google.com/drive/folders/1NrTXjJ25SCxDgjDlmIk2513UGFA6zsBh?usp=drive_link)**
 
-| Grasp Type        | # Samples | Verified Success Rate       | Evaluation Method             |
-|-------------------|-----------|------------------------------|--------------------------------|
-| Power Grasp       | 200       | ✅ **100%**                   | Manual inspection + simulation |
-| Pinch Grasp       | 200       | ✅ **100%**                   | Manual inspection + simulation |
-| Tripod Grasp      | 200       | ✅ **100%**                   | Manual inspection + simulation |
-| Lumbrical Grasp   | 200       | ✅ **≥ 70%**                  | Visual inspection + simulation |
-| Cylindrical Grasp | 200       | ✅ **≥ 70%**                  | Visual inspection + simulation |
+| Grasp Type        | # Visualized Samples | Match to Expected Strategy          |
+|-------------------|----------------------|-------------------------------------|
+| Power Grasp       | 200                  | ✅ **~100%** (fully match)           |
+| Pinch Grasp       | 200                  | ✅ **~100%** (fully match)           |
+| Tripod Grasp      | 200                  | ✅ **~100%** (fully match)           |
+| Lumbrical Grasp   | 200                  | ✅ **≥ 70%** (partially match)       |
+| Cylindrical Grasp | 200                  | ✅ **≥ 70%** (partially match)       |
 
-> ✅ *Power, Pinch, and Tripod* grasps were manually verified to achieve near-perfect stability and force closure.  
-> ⚠️ *Lumbrical and Cylindrical* types are inherently more challenging but show stable performance above 70%.
+> ✅ *Power, Pinch, and Tripod* examples consistently matched their intended grasp type.  
+> ⚠️ *Lumbrical and Cylindrical* examples showed more variability but still reflected expected patterns in the majority of cases.
 
 ---
 
@@ -82,4 +91,3 @@ CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_3
 
 # 5. Generate Cylindrical Grasp
 CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_hook.yml -w 20
-
