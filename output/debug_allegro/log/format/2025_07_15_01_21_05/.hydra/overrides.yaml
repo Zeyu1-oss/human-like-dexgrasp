@@ -1,0 +1,2 @@
+- task=format
+- task.data_path=/home/rose/BODex/src/curobo/content/assets/output/sim_allego/fc_cylinderial/debug/graspdata

@@ -1,0 +1,15 @@
+# config/task/mergeobj.yaml
+
+_grasp_base_: default
+task_name: mergeobj
+vis_type: succ  # or raw / fail
+max_num: 200
+# These will be resolved in hydra/main
+grasp_dir: output/debug_shadow/graspdata
+succ_dir: output/debug_shadow/success
+eval_dir: output/debug_shadow/eval
+vobj_dir: output/vis_mergeobj
+
+hand:
+  xml_path: assets/hand/shadow/customized.xml
+  mocap: true

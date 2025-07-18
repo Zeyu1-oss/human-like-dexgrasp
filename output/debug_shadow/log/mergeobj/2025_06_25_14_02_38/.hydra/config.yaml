@@ -1,0 +1,70 @@
+skip: true
+n_worker: 48
+setting: fc
+exp_name: debug
+save_root: output
+save_dir: ${save_root}/${exp_name}_${hand_name}
+grasp_dir: ${save_dir}/graspdata
+eval_dir: ${save_dir}/evaluation
+succ_dir: ${save_dir}/succgrasp
+collect_dir: ${save_dir}/succ_collect
+vusd_dir: ${save_dir}/vis_usd
+vobj_dir: /media/rose/KINGSTON/obj/vis_obj
+data_struct:
+- '**'
+- '**'
+- '**.npy'
+log_dir: ${save_dir}/log/${task_name}/${now:%Y_%m_%d_%H_%M_%S}
+task_name: ${hydra:runtime.choices.task}
+hand_name: ${hydra:runtime.choices.hand}
+task:
+  _grasp_base_: default
+  task_name: mergeobj
+  vis_type: fail
+  max_num: 200
+  grasp_dir: output/debug_shadow/graspdata
+  succ_dir: output/debug_shadow/success
+  eval_dir: output/debug_shadow/eval
+  vobj_dir: output/vis_mergeobj
+  hand:
+    xml_path: assets/hand/shadow/customized.xml
+    mocap: true
+hand:
+  xml_path: assets/hand/shadow/right_hand.xml
+  mocap: true
+  exclude_table_contact: null
+  color:
+  - 0.863157
+  - 0.0865002
+  - 0.0802199
+  - 1.0
+  finger_prefix:
+  - rh_ff
+  - rh_mf
+  - rh_rf
+  - rh_lf
+  - rh_th
+  valid_body_name:
+  - rh_palm
+  - rh_ffproximal
+  - rh_ffmiddle
+  - rh_ffdistal
+  - rh_mfproximal
+  - rh_mfmiddle
+  - rh_mfdistal
+  - rh_rfproximal
+  - rh_rfmiddle
+  - rh_rfdistal
+  - rh_lfmetacarpal
+  - rh_lfproximal
+  - rh_lfmiddle
+  - rh_lfdistal
+  - rh_thproximal
+  - rh_thmiddle
+  - rh_thdistal
+  tip_body_name:
+  - rh_ffdistal
+  - rh_mfdistal
+  - rh_rfdistal
+  - rh_lfdistal
+  - rh_thdistal

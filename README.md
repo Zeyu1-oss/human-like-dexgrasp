@@ -1,93 +1,111 @@
-# Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)
+# DexGraspBench
 
-This repository contains my semester project at the Technical University of Munich (TUM), built on top of [BODex](https://pku-epic.github.io/BODex). The goal of this project is to explore **human-like robotic dexterous grasp synthesis** using BODex’s efficient GPU-based pipeline. Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, including:
+A standard and unified simulation benchmark in [MuJoCo](https://github.com/google-deepmind/mujoco/) for dexterous grasping, aimed at **enabling a fair comparison across different grasp synthesis methods**, proposed in *BODex: Scalable and Efficient Robotic Dexterous Grasp Synthesis Using Bilevel Optimization [ICRA 2025]*.
 
-- Two-finger pinch  
-- Three-finger tripod  
-- random power 
-- Lumbrical grasp  
-- Cylindrical grasp  
+[Project page](https://pku-epic.github.io/BODex/) ｜ [Paper](https://arxiv.org/abs/2412.16490) | [Grasp synthesis code](https://github.com/JYChen18/BODex)
 
-across **three different robotic hand designs**.
+## Introduction
 
-##  Project Focus
+### Main Usage
+- Replay and test **open-loop** grasping poses/trajectories in parallel.
 
-This project is under active development, with an emphasis on learning, prototyping, and validating **task-oriented grasp synthesis** methods inspired by human grasping behaviors.
+- Each grasping data point only needs to include:
+  - Object (must be pre-processed by [MeshProcess](https://github.com/JYChen18/MeshProcess)): `obj_scale`, `obj_pose`, `obj_path`.
+  - Hand: `approach_qpos` (optional), `pregrasp_qpos`, `grasp_qpos`, `squeeze_qpos`.
 
-## ⚙ Energy Extensions
+- For a quick start, some example data is provided in the `output/example_shadow` directory, which can be directly evaluated with the following line after [installing](https://github.com/JYChen18/DexGraspBench/tree/main?tab=readme-ov-file#installation).
+```
+bash script/example.sh
+```
 
-To better replicate human grasp characteristics, I introduced two customized energy components into the optimization process:
+### Highlight
 
-- **Joint Consistency Energy**  
-  Ensures coordinated movement within finger joint groups, enabling realistic poses like *hook* and *lumbrical* grasps.
+- **Comprehensive Evaluation Metrics**: Includes simulation success rate, analytic force closure metrics, penetration depth, contact quality, data diversity, and more.
+- **Diverse Experimental Settings**: Covers various robotic hands (e.g., Allegro, Shadow, Leap, UR10e+Shadow), data formats (e.g., motion sequences, static poses), and scenarios (e.g., tabletop lifting, force-closure testing).
+- **Multiple Baseline Methods**: Includes optimization-based grasp synthesis approaches (e.g., [DexGraspNet](https://github.com/PKU-EPIC/DexGraspNet), [FRoGGeR](https://github.com/alberthli/frogger), [SpringGrasp](https://github.com/Stanford-TML/SpringGrasp_release), [BODex](https://pku-epic.github.io/BODex/)) and data-driven baselines (e.g., CVAE, Diffusion Model, Normalizing Flow).
+- **Reproducible and Standardized Testing**: The hand assets are sourced from [MuJoCo_Menagerie](https://github.com/google-deepmind/mujoco_menagerie), with modification details provided in the `assets/hand` directory. 
 
-- **Joint Bending Energy**  
-  Promotes natural finger flexion patterns aligned with specific human grasp styles.
+## Getting Started
 
-These components guide optimization toward structured, stable, and human-like grasp poses that maintain **force closure**.
+### Installation
+1. Clone the third-party library [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie).
+```
+git submodule update --init --recursive --progress
+```
+2. Install the python environment via [Anaconda](https://www.anaconda.com/). 
+```
+conda create -n DGBench python=3.10 
+conda activate DGBench
+pip install numpy==1.26.4
+conda install pytorch==2.2.2 pytorch-cuda=12.1 -c pytorch -c nvidia 
+pip install mujoco
+pip install trimesh
+pip install hydra-core
+pip install transforms3d
+pip install matplotlib
+pip install scikit-learn
+pip install usd-core
+pip install imageio
+pip install 'qpsolvers[clarabel]'
+```
 
----
+### Running
+1. (Optional) Download our pre-processed object assets `DGN_obj_processed.zip` and `DGN_obj_split.zip` from [here](https://huggingface.co/datasets/JiayiChenPKU/BODex) and organize the unzipped folders as below. Alternatively, new object assets can be pre-processed using [MeshProcess](https://github.com/JYChen18/MeshProcess).
+```
+assets/object/DGN_obj
+|- processed_data
+|  |- core_bottle_1a7ba1f4c892e2da30711cdbdbc73924
+|  |_ ...
+|- valid_split
+|  |- all.json
+|  |_ ...
+```
 
-##  Large-Scale Grasp Dataset
+2. (Optional) Synthesize new grasp data with [BODex](https://github.com/JYChen18/BODex) and convert to our supported format. There are also some all-in-one scripts in the `script` directory to test BODex's grasps.
+```
+python src/main.py task=format task.data_path=${YOUR_PATH_TO_BODEX_OUTPUT}
+```
 
-Using the extended pipeline, I generated a total of **1.5 million grasps**:
+3. Evaluate synthesized grasps. 
+```
+python src/main.py task=eval
+```
 
-> 🔹 3 robotic hands × 5 grasp types × ~100,000 grasps per configuration  
-> = **1,500,000 grasp samples**
+4. Calculate statistics after evaluation.
+```
+python src/main.py task=stat
+```
 
-All data was generated using GPU-accelerated optimization with joint-level energy terms and constraint configurations tailored to each grasp strategy and hand structure.
+### Visualization
+We provide two methods to visualize the synthesized grasps. The first method is through [OpenUSD](https://github.com/PixarAnimationStudios/OpenUSD). 
+```
+python src/main.py task=vusd
+```
+The other method is to save OBJ files.
+```
+python src/main.py task=vobj
+```
 
----
+## Changelog
+The `main` branch serves as our standard benchmark, with some adjustments to the settings compared to the [BODex](https://arxiv.org/abs/2412.16490) paper, aimed at improving the practicality. Key changes include increasing the object mass from 30g to 100g, raising the hand's kp from 1 to 5, and supporting more diverse object assets. One can further reduce friction coefficients `miu_coef` (currently 0.6 for tangential and 0.02 for torsional) to increase difficulty.
 
-##  Visual Grasp Evaluation
+The original benchmark version is available in the `baseline` branch. This branch also includes code to test other grasp synthesis baselines, such as [DexGraspNet](https://github.com/PKU-EPIC/DexGraspNet), [FRoGGeR](https://github.com/alberthli/frogger), [SpringGrasp](https://github.com/Stanford-TML/SpringGrasp_release).
 
-To verify the validity of the synthesized grasp styles, I randomly sampled **200 grasps per strategy** (from the full dataset) for visual inspection. Each sample was manually assessed to determine whether it matched the **expected human grasp pattern**.
 
-🔗 **[Grasp Visualization Samples (Google Drive)](https://drive.google.com/drive/folders/1NrTXjJ25SCxDgjDlmIk2513UGFA6zsBh?usp=drive_link)**
+### Future Plan
+- Incorporate visual/tactile feedback to support **close-loop** evaluation.
+- Add support for other physics simulators, such as [MJX](https://mujoco.readthedocs.io/en/stable/mjx.html) and the [IPC-based simulator](https://dl.acm.org/doi/10.1145/3528223.3530064).
 
-| Grasp Type        | # Visualized Samples | Match to Expected Strategy          |
-|-------------------|----------------------|-------------------------------------|
-| Power Grasp       | 200                  |  **~100%** (fully match)           |
-| Pinch Grasp       | 200                  |  **~100%** (fully match)           |
-| Tripod Grasp      | 200                  |  **~100%** (fully match)           |
-| Lumbrical Grasp   | 200                  |  **≥ 70%** (partially match)       |
-| Cylindrical Grasp | 200                  |  **≥ 70%** (partially match)       |
+The detailed updating timeline is unclear. 
 
->  *Power, Pinch, and Tripod* examples consistently matched their intended grasp type.  
-> ⚠ *Lumbrical and Cylindrical* examples showed more variability but still reflected expected patterns in the majority of cases.
 
----
-
-##  Grasp Examples
-
-- **Lumbrical Grasp**  
-  <img src="https://github.com/user-attachments/assets/051551ca-5cf1-427d-9445-fe148e50008b" width="400"/>
-
-- **Power Grasp**  
-  <img src="https://github.com/user-attachments/assets/8cd0dfc2-358a-4caf-96bc-5342d1da5bdb" width="400"/>
-
-- **Two-Finger Grasp**  
-  <img src="https://github.com/user-attachments/assets/0757d264-2901-46ac-911b-318110bdf8c4" width="400"/>
-
-- **Cylindrical Grasp**  
-  <img src="https://github.com/user-attachments/assets/e9580c92-64c8-4c1c-b2c1-17934c6ac4a6" width="400"/>
-
----
-
-##  Run Grasp Generation
-
-```bash
-# 1. Generate Lumbrical Grasp
-CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_lumbrical.yml -w 20
-
-# 2. Generate Power Grasp
-CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_power.yml -w 20
-
-# 3. Generate Two-Finger Grasp
-CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_2finger.yml -w 20
-
-# 4. Generate Tripod Grasp
-CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_3finger.yml -w 20
-
-# 5. Generate Cylindrical Grasp
-CUDA_VISIBLE_DEVICES=0 python example_grasp/plan_batch_env.py -c sim_shadow/fc_hook.yml -w 20
+## Citation
+If you find this project useful, please consider citing:
+```
+@article{chen2024bodex,
+  title={BODex: Scalable and Efficient Robotic Dexterous Grasp Synthesis Using Bilevel Optimization},
+  author={Chen, Jiayi and Ke, Yubin and Wang, He},
+  journal={arXiv preprint arXiv:2412.16490},
+  year={2024}
+}
+```
