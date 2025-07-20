@@ -43,7 +43,7 @@ All data was generated using GPU-accelerated optimization with joint-level energ
 
 To verify the validity of the synthesized grasp styles, I randomly sampled **200 grasps per strategy** (from the full dataset) for visual inspection. Each sample was manually assessed to determine whether it matched the **expected human grasp pattern**.
 
-🔗 **[Grasp Visualization Samples (Google Drive)](https://drive.google.com/drive/folders/1NrTXjJ25SCxDgjDlmIk2513UGFA6zsBh?usp=drive_link)**
+🔗 **[Grasp dataset with Visualization Samples (Google Drive)](https://drive.google.com/drive/folders/1NrTXjJ25SCxDgjDlmIk2513UGFA6zsBh?usp=drive_link)**
 
 | Grasp Type        | # Visualized Samples | Match to Expected Strategy          |
 |-------------------|----------------------|-------------------------------------|
