@@ -1,6 +1,7 @@
 # Human-Like Grasp Synthesis (Ongoing | 2025.03 – Present)
 
-This repository contains my semester project at the Technical University of Munich (TUM), built on top of [BODex](https://pku-epic.github.io/BODex). The goal of this project is to explore **human-like robotic dexterous grasp synthesis** using BODex’s efficient GPU-based pipeline. Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, including:
+This repository contains my semester project at the Technical University of Munich (TUM), built on top of [BODex](https://pku-epic.github.io/BODex).Here is my supervisor's email: qian.feng@tum.de.
+The goal of this project is to explore **human-like robotic dexterous grasp synthesis** using BODex’s efficient GPU-based pipeline. Specifically, I extend the original framework to generate grasp poses that mimic common human strategies, including:
 
 - Two-finger pinch  
 - Three-finger tripod  
